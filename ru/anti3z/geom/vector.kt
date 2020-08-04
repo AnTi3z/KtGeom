@@ -67,8 +67,7 @@ sealed class Vector2Base<out T : Number> : Tuple2<T> {
     var length: Double
         get() = when (this) {
             is Vector2D -> hypot(x, y)
-            is Vector2F -> hypot(x.toDouble(), y.toDouble())
-            is Vector2I -> hypot(x.toDouble(), y.toDouble())
+            else -> hypot(x.toDouble(), y.toDouble())
         }
         set(value) = when {
             length != 0.0 -> scale(value / length)
