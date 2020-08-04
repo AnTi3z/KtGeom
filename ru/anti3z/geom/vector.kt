@@ -1,6 +1,5 @@
 package ru.anti3z.geom
 
-import java.lang.Exception
 import kotlin.math.hypot
 
 sealed class Vector2Base<out T : Number> : Tuple2<T> {
@@ -74,17 +73,17 @@ sealed class Vector2Base<out T : Number> : Tuple2<T> {
             else -> throw Exception("Cannot lengthened ZERO vector")
         }
 
-    override fun toDouble() = when(this) {
+    override fun toDouble() = when (this) {
         is Vector2D -> this
         else -> Vector2D(x, y)
     }
 
-    override fun toFloat() = when(this) {
+    override fun toFloat() = when (this) {
         is Vector2F -> this
         else -> Vector2F(x, y)
     }
 
-    override fun toInt() = when(this) {
+    override fun toInt() = when (this) {
         is Vector2I -> this
         else -> Vector2I(x, y)
     }

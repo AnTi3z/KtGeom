@@ -13,17 +13,17 @@ sealed class Point2Base<out T : Number> : Tuple2<T> {
         is Point2I -> Point2I(x - rhs.x.toInt(), y - rhs.y.toInt())
     }
 
-    override fun toDouble() = when(this) {
+    override fun toDouble() = when (this) {
         is Point2D -> this
         else -> Point2D(x, y)
     }
 
-    override fun toFloat() = when(this) {
+    override fun toFloat() = when (this) {
         is Point2F -> this
         else -> Point2F(x, y)
     }
 
-    override fun toInt() = when(this) {
+    override fun toInt() = when (this) {
         is Point2I -> this
         else -> Point2I(x, y)
     }
