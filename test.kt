@@ -60,6 +60,9 @@ fun main() {
 
     val b1d = geom2DFactory.createRect(v1d, 5, 5)
     println("$b1d")
+    println("${b1d.top}")
+    b1d.top = 8.0
+    println("$b1d")
     assertTrue { Point2I(3, 3) in b1d }
     assertTrue { Point2D(4.5, 7.5) in b1d }
     val b2d = geom2DFactory.createRect(10, 10)
@@ -67,10 +70,10 @@ fun main() {
     assertFalse { Point2I(15, 5) in b2d }
     val b3d = geom2DFactory.createRect(Point2D(2, 2.4), Vector2I(5, 6))
     println("$b3d")
-    assertEquals(2.0, b3d.bottomLeft.x)
-    assertEquals(2.4, b3d.bottomLeft.y)
-    assertEquals(5.0, b3d.topRight.x)
-    assertEquals(6.0, b3d.topRight.y)
+    assertEquals(2.0, b3d.left)
+    assertEquals(2.4, b3d.bottom)
+    assertEquals(5.0, b3d.right)
+    assertEquals(6.0, b3d.top)
 
 
     println("${v1d.length}")

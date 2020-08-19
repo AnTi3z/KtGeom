@@ -1,8 +1,52 @@
 package ru.anti3z.geom
 
-sealed class Rect2Base<out T : Number> {
+import kotlin.reflect.KProperty
+
+class PointProperty<T : Number>(private val propName: Name) {
+    enum class Name { TOP, LEFT, RIGHT, BOTTOM }
+
+    operator fun getValue(thisRef: Rect2Base<T>, property: KProperty<*>): T {
+        return when (propName) {
+            Name.TOP -> thisRef.topRight.y
+            Name.BOTTOM -> thisRef.bottomLeft.y
+            Name.RIGHT -> thisRef.topRight.x
+            Name.LEFT -> thisRef.bottomLeft.x
+        }
+    }
+
+    operator fun setValue(thisRef: Rect2Base<T>, property: KProperty<*>, value: Number) {
+        when (thisRef) {
+            is Rect2D -> when (propName) {
+                Name.TOP -> thisRef.topRight.y = value.toDouble()
+                Name.BOTTOM -> thisRef.bottomLeft.y = value.toDouble()
+                Name.RIGHT -> thisRef.topRight.x = value.toDouble()
+                Name.LEFT -> thisRef.bottomLeft.x = value.toDouble()
+            }
+            is Rect2F -> when (propName) {
+                Name.TOP -> thisRef.topRight.y = value.toFloat()
+                Name.BOTTOM -> thisRef.bottomLeft.y = value.toFloat()
+                Name.RIGHT -> thisRef.topRight.x = value.toFloat()
+                Name.LEFT -> thisRef.bottomLeft.x = value.toFloat()
+            }
+            is Rect2I -> when (propName) {
+                Name.TOP -> thisRef.topRight.y = value.toInt()
+                Name.BOTTOM -> thisRef.bottomLeft.y = value.toInt()
+                Name.RIGHT -> thisRef.topRight.x = value.toInt()
+                Name.LEFT -> thisRef.bottomLeft.x = value.toInt()
+            }
+        }
+
+    }
+}
+
+sealed class Rect2Base<T : Number> {
     abstract val bottomLeft: Point2Base<T>
     abstract val topRight: Point2Base<T>
+
+    var top by PointProperty(PointProperty.Name.TOP)
+    var bottom by PointProperty(PointProperty.Name.BOTTOM)
+    var right by PointProperty(PointProperty.Name.RIGHT)
+    var left by PointProperty(PointProperty.Name.LEFT)
 
     operator fun <R : Number> contains(pnt: Tuple2<R>) = when (this) {
         is Rect2D -> (pnt.x.toDouble() in bottomLeft.x..topRight.x) && (pnt.y.toDouble() in bottomLeft.y..topRight.y)
@@ -57,6 +101,8 @@ data class Rect2D(override var bottomLeft: Point2D, override var topRight: Point
         }
 
         fun create(width: Number, height: Number) = Rect2D(Point2D(), Point2D(width, height))
+        fun create(top: Number, left: Number, right: Number, bottom: Number) =
+            Rect2D(Point2D(left, bottom), Point2D(right, top))
     }
 }
 
@@ -81,6 +127,8 @@ data class Rect2F(override var bottomLeft: Point2F, override var topRight: Point
         }
 
         fun create(width: Number, height: Number) = Rect2F(Point2F(), Point2F(width, height))
+        fun create(top: Number, left: Number, right: Number, bottom: Number) =
+            Rect2F(Point2F(left, bottom), Point2F(right, top))
     }
 }
 
@@ -105,5 +153,7 @@ data class Rect2I(override var bottomLeft: Point2I, override var topRight: Point
         }
 
         fun create(width: Number, height: Number) = Rect2I(Point2I(), Point2I(width, height))
+        fun create(top: Number, left: Number, right: Number, bottom: Number) =
+            Rect2I(Point2I(left, bottom), Point2I(right, top))
     }
 }
