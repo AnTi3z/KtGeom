@@ -7,9 +7,9 @@ interface Geom2Factory<out T : Number> {
     fun createVector(x: Number, y: Number): Vector2Base<T>
     fun <R : Number> createVector(src: Tuple2<R>): Vector2Base<T>
 
-    fun <R : Number> createBounds(lowLeft: Tuple2<R>, upRight: Tuple2<R>): Bounds2Base<T>
-    fun <R : Number> createBounds(center: Tuple2<R>, width: Number, height: Number): Bounds2Base<T>
-    fun createBounds(width: Number, height: Number): Bounds2Base<T>
+    fun <R : Number> createRect(lowLeft: Tuple2<R>, upRight: Tuple2<R>): Rect2Base<T>
+    fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number): Rect2Base<T>
+    fun createRect(width: Number, height: Number): Rect2Base<T>
 }
 
 class Geom2DFactory : Geom2Factory<Double> {
@@ -21,11 +21,11 @@ class Geom2DFactory : Geom2Factory<Double> {
     override fun createVector(x: Number, y: Number) = Vector2D(x, y)
     override fun <R : Number> createVector(src: Tuple2<R>) = Vector2D.create(src)
 
-    override fun <R : Number> createBounds(lowLeft: Tuple2<R>, upRight: Tuple2<R>) = Bounds2D.create(lowLeft, upRight)
-    override fun <R : Number> createBounds(center: Tuple2<R>, width: Number, height: Number) =
-        Bounds2D.create(center, width, height)
+    override fun <R : Number> createRect(lowLeft: Tuple2<R>, upRight: Tuple2<R>) = Rect2D.create(lowLeft, upRight)
+    override fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number) =
+        Rect2D.create(center, width, height)
 
-    override fun createBounds(width: Number, height: Number) = Bounds2D.create(width, height)
+    override fun createRect(width: Number, height: Number) = Rect2D.create(width, height)
 }
 
 class Geom2FFactory : Geom2Factory<Float> {
@@ -37,11 +37,11 @@ class Geom2FFactory : Geom2Factory<Float> {
     override fun createVector(x: Number, y: Number) = Vector2F(x, y)
     override fun <R : Number> createVector(src: Tuple2<R>) = Vector2F.create(src)
 
-    override fun <R : Number> createBounds(lowLeft: Tuple2<R>, upRight: Tuple2<R>) = Bounds2F.create(lowLeft, upRight)
-    override fun <R : Number> createBounds(center: Tuple2<R>, width: Number, height: Number) =
-        Bounds2F.create(center, width, height)
+    override fun <R : Number> createRect(lowLeft: Tuple2<R>, upRight: Tuple2<R>) = Rect2F.create(lowLeft, upRight)
+    override fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number) =
+        Rect2F.create(center, width, height)
 
-    override fun createBounds(width: Number, height: Number) = Bounds2F.create(width, height)
+    override fun createRect(width: Number, height: Number) = Rect2F.create(width, height)
 }
 
 class Geom2IFactory : Geom2Factory<Int> {
@@ -53,9 +53,9 @@ class Geom2IFactory : Geom2Factory<Int> {
     override fun createVector(x: Number, y: Number) = Vector2I(x, y)
     override fun <R : Number> createVector(src: Tuple2<R>) = Vector2I.create(src)
 
-    override fun <R : Number> createBounds(lowLeft: Tuple2<R>, upRight: Tuple2<R>) = Bounds2I.create(lowLeft, upRight)
-    override fun <R : Number> createBounds(center: Tuple2<R>, width: Number, height: Number) =
-        Bounds2I.create(center, width, height)
+    override fun <R : Number> createRect(lowLeft: Tuple2<R>, upRight: Tuple2<R>) = Rect2I.create(lowLeft, upRight)
+    override fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number) =
+        Rect2I.create(center, width, height)
 
-    override fun createBounds(width: Number, height: Number) = Bounds2I.create(width, height)
+    override fun createRect(width: Number, height: Number) = Rect2I.create(width, height)
 }
