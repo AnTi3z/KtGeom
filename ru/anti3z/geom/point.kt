@@ -1,6 +1,6 @@
 package ru.anti3z.geom
 
-sealed class Point2Base<out T : Number> : Tuple2<T> {
+sealed class Point2Base<T : Number> : Tuple2<T> {
     open operator fun <R : Number> plus(rhs: Vector2Base<R>) = when (this) {
         is Point2D -> Point2D(x + rhs.x.toDouble(), y + rhs.y.toDouble())
         is Point2F -> Point2F(x + rhs.x.toFloat(), y + rhs.y.toFloat())

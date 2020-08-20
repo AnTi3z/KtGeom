@@ -1,97 +1,75 @@
 package ru.anti3z.geom
 
-import kotlin.reflect.KProperty
-
-class PointProperty<T : Number>(private val propName: Name) {
-    enum class Name { TOP, LEFT, RIGHT, BOTTOM }
-
-    operator fun getValue(thisRef: Rect2Base<T>, property: KProperty<*>): T {
-        return when (propName) {
-            Name.TOP -> thisRef.topRight.y
-            Name.BOTTOM -> thisRef.bottomLeft.y
-            Name.RIGHT -> thisRef.topRight.x
-            Name.LEFT -> thisRef.bottomLeft.x
-        }
-    }
-
-    operator fun setValue(thisRef: Rect2Base<T>, property: KProperty<*>, value: Number) {
-        when (thisRef) {
-            is Rect2D -> when (propName) {
-                Name.TOP -> thisRef.topRight.y = value.toDouble()
-                Name.BOTTOM -> thisRef.bottomLeft.y = value.toDouble()
-                Name.RIGHT -> thisRef.topRight.x = value.toDouble()
-                Name.LEFT -> thisRef.bottomLeft.x = value.toDouble()
-            }
-            is Rect2F -> when (propName) {
-                Name.TOP -> thisRef.topRight.y = value.toFloat()
-                Name.BOTTOM -> thisRef.bottomLeft.y = value.toFloat()
-                Name.RIGHT -> thisRef.topRight.x = value.toFloat()
-                Name.LEFT -> thisRef.bottomLeft.x = value.toFloat()
-            }
-            is Rect2I -> when (propName) {
-                Name.TOP -> thisRef.topRight.y = value.toInt()
-                Name.BOTTOM -> thisRef.bottomLeft.y = value.toInt()
-                Name.RIGHT -> thisRef.topRight.x = value.toInt()
-                Name.LEFT -> thisRef.bottomLeft.x = value.toInt()
-            }
-        }
-
-    }
-}
-
 sealed class Rect2Base<T : Number> {
-    abstract val bottomLeft: Point2Base<T>
-    abstract val topRight: Point2Base<T>
+    abstract var bottomLeft: Point2Base<T>
+    abstract var topRight: Point2Base<T>
 
-    var top by PointProperty(PointProperty.Name.TOP)
-    var bottom by PointProperty(PointProperty.Name.BOTTOM)
-    var right by PointProperty(PointProperty.Name.RIGHT)
-    var left by PointProperty(PointProperty.Name.LEFT)
+    var top: T
+        inline get() = topRight.y
+        inline set(value) {
+            topRight.y = value
+        }
 
-    operator fun <R : Number> contains(pnt: Tuple2<R>) = when (this) {
+    var bottom: T
+        inline get() = bottomLeft.y
+        inline set(value) {
+            bottomLeft.y = value
+        }
+
+    var right: T
+        inline get() = topRight.x
+        inline set(value) {
+            topRight.x = value
+        }
+
+    var left: T
+        inline get() = bottomLeft.x
+        inline set(value) {
+            bottomLeft.x = value
+        }
+
+    var width: T
+        @Suppress("UNCHECKED_CAST")
+        get() = when (this) {
+            is Rect2D -> (topRight.x - bottomLeft.x) as T
+            is Rect2F -> (topRight.x - bottomLeft.x) as T
+            is Rect2I -> (topRight.x - bottomLeft.x) as T
+        }
+        set(value) {
+            when (this) {
+                is Rect2D -> topRight.x = bottomLeft.x + value.toDouble()
+                is Rect2F -> topRight.x = bottomLeft.x + value.toFloat()
+                is Rect2I -> topRight.x = bottomLeft.x + value.toInt()
+            }
+        }
+
+    var height: T
+        @Suppress("UNCHECKED_CAST")
+        get() = when (this) {
+            is Rect2D -> (topRight.y - bottomLeft.y) as T
+            is Rect2F -> (topRight.y - bottomLeft.y) as T
+            is Rect2I -> (topRight.y - bottomLeft.y) as T
+        }
+        set(value) =
+            when (this) {
+                is Rect2D -> topRight.y = bottomLeft.y + value.toDouble()
+                is Rect2F -> topRight.y = bottomLeft.y + value.toFloat()
+                is Rect2I -> topRight.y = bottomLeft.y + value.toInt()
+            }
+
+    operator fun <R : Number> contains(pnt: Tuple2<R>): Boolean = when (this) {
         is Rect2D -> (pnt.x.toDouble() in bottomLeft.x..topRight.x) && (pnt.y.toDouble() in bottomLeft.y..topRight.y)
         is Rect2F -> (pnt.x.toFloat() in bottomLeft.x..topRight.x) && (pnt.y.toFloat() in bottomLeft.y..topRight.y)
         is Rect2I -> (pnt.x.toInt() in bottomLeft.x..topRight.x) && (pnt.y.toInt() in bottomLeft.y..topRight.y)
     }
 
-    open fun getWidth(): Number = when (this) {
-        is Rect2D -> topRight.x - bottomLeft.x
-        is Rect2F -> topRight.x - bottomLeft.x
-        is Rect2I -> topRight.x - bottomLeft.x
-    }
-
-    fun setWidth(value: Number) = when (this) {
-        is Rect2D -> topRight.x = bottomLeft.x + value.toDouble()
-        is Rect2F -> topRight.x = bottomLeft.x + value.toFloat()
-        is Rect2I -> topRight.x = bottomLeft.x + value.toInt()
-    }
-
-    open fun getHeight(): Number = when (this) {
-        is Rect2D -> topRight.y - bottomLeft.y
-        is Rect2F -> topRight.y - bottomLeft.y
-        is Rect2I -> topRight.y - bottomLeft.y
-    }
-
-    fun setHeight(value: Number) = when (this) {
-        is Rect2D -> topRight.y = bottomLeft.y + value.toDouble()
-        is Rect2F -> topRight.y = bottomLeft.y + value.toFloat()
-        is Rect2I -> topRight.y = bottomLeft.y + value.toInt()
-    }
-
 }
 
-data class Rect2D(override var bottomLeft: Point2D, override var topRight: Point2D) : Rect2Base<Double>() {
-    override fun getWidth() = super.getWidth() as Double
-    override fun getHeight() = super.getHeight() as Double
-    var width: Double
-        inline get() = getWidth()
-        inline set(value) = setWidth(value)
-    var height: Double
-        inline get() = getHeight()
-        inline set(value) = setHeight(value)
+data class Rect2D(override var bottomLeft: Point2Base<Double>, override var topRight: Point2Base<Double>) :
+    Rect2Base<Double>() {
 
     companion object {
-        fun <T : Number> create(lowLeft: Tuple2<T>, upRight: Tuple2<T>) =
+        fun <T1 : Number, T2 : Number> create(lowLeft: Tuple2<T1>, upRight: Tuple2<T2>) =
             Rect2D(Point2D.create(lowLeft), Point2D.create(upRight))
 
         fun <T : Number> create(center: Tuple2<T>, width: Number, height: Number): Rect2D {
@@ -106,18 +84,11 @@ data class Rect2D(override var bottomLeft: Point2D, override var topRight: Point
     }
 }
 
-data class Rect2F(override var bottomLeft: Point2F, override var topRight: Point2F) : Rect2Base<Float>() {
-    override fun getWidth() = super.getWidth() as Float
-    override fun getHeight() = super.getWidth() as Float
-    var width: Float
-        inline get() = getWidth()
-        inline set(value) = setWidth(value)
-    var height: Float
-        inline get() = getHeight()
-        inline set(value) = setHeight(value)
+data class Rect2F(override var bottomLeft: Point2Base<Float>, override var topRight: Point2Base<Float>) :
+    Rect2Base<Float>() {
 
     companion object {
-        fun <T : Number> create(lowLeft: Tuple2<T>, upRight: Tuple2<T>) =
+        fun <T1 : Number, T2 : Number> create(lowLeft: Tuple2<T1>, upRight: Tuple2<T2>) =
             Rect2F(Point2F.create(lowLeft), Point2F.create(upRight))
 
         fun <T : Number> create(center: Tuple2<T>, width: Number, height: Number): Rect2F {
@@ -132,18 +103,10 @@ data class Rect2F(override var bottomLeft: Point2F, override var topRight: Point
     }
 }
 
-data class Rect2I(override var bottomLeft: Point2I, override var topRight: Point2I) : Rect2Base<Int>() {
-    override fun getWidth() = super.getWidth() as Int
-    override fun getHeight() = super.getWidth() as Int
-    var width: Int
-        inline get() = getWidth()
-        inline set(value) = setWidth(value)
-    var height: Int
-        inline get() = getHeight()
-        inline set(value) = setHeight(value)
+data class Rect2I(override var bottomLeft: Point2Base<Int>, override var topRight: Point2Base<Int>) : Rect2Base<Int>() {
 
     companion object {
-        fun <T : Number> create(lowLeft: Tuple2<T>, upRight: Tuple2<T>) =
+        fun <T1 : Number, T2 : Number> create(lowLeft: Tuple2<T1>, upRight: Tuple2<T2>) =
             Rect2I(Point2I.create(lowLeft), Point2I.create(upRight))
 
         fun <T : Number> create(center: Tuple2<T>, width: Number, height: Number): Rect2I {

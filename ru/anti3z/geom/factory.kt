@@ -7,7 +7,7 @@ interface Geom2Factory<T : Number> {
     fun createVector(x: Number, y: Number): Vector2Base<T>
     fun <R : Number> createVector(src: Tuple2<R>): Vector2Base<T>
 
-    fun <R : Number> createRect(bottomLeft: Tuple2<R>, topRight: Tuple2<R>): Rect2Base<T>
+    fun <R1 : Number, R2 : Number> createRect(bottomLeft: Tuple2<R1>, topRight: Tuple2<R2>): Rect2Base<T>
     fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number): Rect2Base<T>
     fun createRect(width: Number, height: Number): Rect2Base<T>
     fun createRect(top: Number, left: Number, right: Number, bottom: Number): Rect2Base<T>
@@ -22,7 +22,7 @@ class Geom2DFactory : Geom2Factory<Double> {
     override fun createVector(x: Number, y: Number) = Vector2D(x, y)
     override fun <R : Number> createVector(src: Tuple2<R>) = Vector2D.create(src)
 
-    override fun <R : Number> createRect(bottomLeft: Tuple2<R>, topRight: Tuple2<R>) =
+    override fun <R1 : Number, R2 : Number> createRect(bottomLeft: Tuple2<R1>, topRight: Tuple2<R2>) =
         Rect2D.create(bottomLeft, topRight)
     override fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number) =
         Rect2D.create(center, width, height)
@@ -40,7 +40,7 @@ class Geom2FFactory : Geom2Factory<Float> {
     override fun createVector(x: Number, y: Number) = Vector2F(x, y)
     override fun <R : Number> createVector(src: Tuple2<R>) = Vector2F.create(src)
 
-    override fun <R : Number> createRect(bottomLeft: Tuple2<R>, topRight: Tuple2<R>) =
+    override fun <R1 : Number, R2 : Number> createRect(bottomLeft: Tuple2<R1>, topRight: Tuple2<R2>) =
         Rect2F.create(bottomLeft, topRight)
     override fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number) =
         Rect2F.create(center, width, height)
@@ -58,7 +58,7 @@ class Geom2IFactory : Geom2Factory<Int> {
     override fun createVector(x: Number, y: Number) = Vector2I(x, y)
     override fun <R : Number> createVector(src: Tuple2<R>) = Vector2I.create(src)
 
-    override fun <R : Number> createRect(bottomLeft: Tuple2<R>, topRight: Tuple2<R>) =
+    override fun <R1 : Number, R2 : Number> createRect(bottomLeft: Tuple2<R1>, topRight: Tuple2<R2>) =
         Rect2I.create(bottomLeft, topRight)
     override fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number) =
         Rect2I.create(center, width, height)

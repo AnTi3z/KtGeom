@@ -2,7 +2,7 @@ package ru.anti3z.geom
 
 import kotlin.math.hypot
 
-sealed class Vector2Base<out T : Number> : Tuple2<T> {
+sealed class Vector2Base<T : Number> : Tuple2<T> {
     open operator fun <R : Number> plus(rhs: Vector2Base<R>) = when (this) {
         is Vector2D -> Vector2D(x + rhs.x.toDouble(), y + rhs.y.toDouble())
         is Vector2F -> Vector2F(x + rhs.x.toFloat(), y + rhs.y.toFloat())
