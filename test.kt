@@ -94,4 +94,7 @@ fun main() {
 
     val v5 = v2f.scaled(3.0)
     println("$v5")
+
+    var z = Point2D()
+    z += v1d
 }
