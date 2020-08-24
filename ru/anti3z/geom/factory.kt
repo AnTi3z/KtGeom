@@ -1,16 +1,16 @@
 package ru.anti3z.geom
 
 interface Geom2Factory<T : Number> {
-    fun createPoint(x: Number, y: Number): Point2Base<T>
-    fun <R : Number> createPoint(src: Tuple2<R>): Point2Base<T>
+    fun createPoint(x: Number, y: Number): Point2<T>
+    fun <R : Number> createPoint(src: Tuple2<R>): Point2<T>
 
-    fun createVector(x: Number, y: Number): Vector2Base<T>
-    fun <R : Number> createVector(src: Tuple2<R>): Vector2Base<T>
+    fun createVector(x: Number, y: Number): Vector2<T>
+    fun <R : Number> createVector(src: Tuple2<R>): Vector2<T>
 
-    fun <R1 : Number, R2 : Number> createRect(bottomLeft: Tuple2<R1>, topRight: Tuple2<R2>): Rect2<T>
-    fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number): Rect2<T>
-    fun createRect(width: Number, height: Number): Rect2<T>
-    fun createRect(top: Number, left: Number, right: Number, bottom: Number): Rect2<T>
+    fun <R1 : Number, R2 : Number> createRect(bottomLeft: Tuple2<R1>, topRight: Tuple2<R2>): Rect2Base<T>
+    fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number): Rect2Base<T>
+    fun createRect(width: Number, height: Number): Rect2Base<T>
+    fun createRect(top: Number, left: Number, right: Number, bottom: Number): Rect2Base<T>
 }
 
 class Geom2DFactory : Geom2Factory<Double> {

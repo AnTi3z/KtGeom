@@ -1,8 +1,8 @@
 package ru.anti3z.geom
 
-interface Rect2Base<out T : Number> {
-    val bottomLeft: Point2Base<T>
-    val topRight: Point2Base<T>
+interface Rect2<out T : Number> {
+    val bottomLeft: Point2<T>
+    val topRight: Point2<T>
 
     val top: T
         get() = topRight.y
@@ -19,9 +19,9 @@ interface Rect2Base<out T : Number> {
     operator fun <R : Number> contains(pnt: Tuple2<R>): Boolean
 }
 
-interface MutableRect2Base<T : Number> : Rect2Base<T> {
-    override var bottomLeft: MutablePoint2Base<T>
-    override var topRight: MutablePoint2Base<T>
+interface MutableRect2<T : Number> : Rect2<T> {
+    override var bottomLeft: MutablePoint2<T>
+    override var topRight: MutablePoint2<T>
 
     override var top: T
         get() = super.top
@@ -50,7 +50,7 @@ interface MutableRect2Base<T : Number> : Rect2Base<T> {
     override var height: T
 }
 
-sealed class Rect2<T : Number> : MutableRect2Base<T> {
+sealed class Rect2Base<T : Number> : MutableRect2<T> {
 
     override var width: T
         @Suppress("UNCHECKED_CAST")
@@ -90,10 +90,9 @@ sealed class Rect2<T : Number> : MutableRect2Base<T> {
 }
 
 data class Rect2D(
-    override var bottomLeft: MutablePoint2Base<Double>,
-    override var topRight: MutablePoint2Base<Double>
-) :
-    Rect2<Double>() {
+    override var bottomLeft: MutablePoint2<Double>,
+    override var topRight: MutablePoint2<Double>
+) : Rect2Base<Double>() {
 
     companion object {
         fun <T1 : Number, T2 : Number> create(lowLeft: Tuple2<T1>, upRight: Tuple2<T2>) =
@@ -111,8 +110,10 @@ data class Rect2D(
     }
 }
 
-data class Rect2F(override var bottomLeft: MutablePoint2Base<Float>, override var topRight: MutablePoint2Base<Float>) :
-    Rect2<Float>() {
+data class Rect2F(
+    override var bottomLeft: MutablePoint2<Float>,
+    override var topRight: MutablePoint2<Float>
+) : Rect2Base<Float>() {
 
     companion object {
         fun <T1 : Number, T2 : Number> create(lowLeft: Tuple2<T1>, upRight: Tuple2<T2>) =
@@ -130,8 +131,10 @@ data class Rect2F(override var bottomLeft: MutablePoint2Base<Float>, override va
     }
 }
 
-data class Rect2I(override var bottomLeft: MutablePoint2Base<Int>, override var topRight: MutablePoint2Base<Int>) :
-    Rect2<Int>() {
+data class Rect2I(
+    override var bottomLeft: MutablePoint2<Int>,
+    override var topRight: MutablePoint2<Int>
+) : Rect2Base<Int>() {
 
     companion object {
         fun <T1 : Number, T2 : Number> create(lowLeft: Tuple2<T1>, upRight: Tuple2<T2>) =
