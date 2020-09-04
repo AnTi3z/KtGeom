@@ -1,68 +1,166 @@
 package ru.anti3z.geom
 
-interface Geom2Factory<T : Number> {
-    fun createPoint(x: Number, y: Number): Point2<T>
-    fun <R : Number> createPoint(src: Tuple2<R>): Point2<T>
+interface Geom2Factory<R : Number> {
+    fun createPoint(x: Number, y: Number): Point2<R>
+    fun createMutablePoint(x: Number, y: Number): MutablePoint2<R>
+    fun <T : Number> createPoint(src: Tuple2<T>): Point2<R>
+    fun <T : Number> createMutablePoint(src: Tuple2<T>): MutablePoint2<R>
 
-    fun createVector(x: Number, y: Number): Vector2<T>
-    fun <R : Number> createVector(src: Tuple2<R>): Vector2<T>
+    fun createVector(x: Number, y: Number): Vector2<R>
+    fun createMutableVector(x: Number, y: Number): MutableVector2<R>
+    fun <T : Number> createVector(src: Tuple2<T>): Vector2<R>
+    fun <T : Number> createMutableVector(src: Tuple2<T>): MutableVector2<R>
 
-    fun <R1 : Number, R2 : Number> createRect(bottomLeft: Tuple2<R1>, topRight: Tuple2<R2>): Rect2Base<T>
-    fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number): Rect2Base<T>
-    fun createRect(width: Number, height: Number): Rect2Base<T>
-    fun createRect(top: Number, left: Number, right: Number, bottom: Number): Rect2Base<T>
+    fun <T1 : Number, T2 : Number> createRect(bottomLeft: Tuple2<T1>, topRight: Tuple2<T2>): Rect2<R>
+    fun <T1 : Number, T2 : Number> createMutableRect(bottomLeft: Tuple2<T1>, topRight: Tuple2<T2>): MutableRect2<R>
+    fun <T : Number> createRect(center: Tuple2<T>, width: Number, height: Number): Rect2<R>
+    fun <T : Number> createMutableRect(center: Tuple2<T>, width: Number, height: Number): MutableRect2<R>
+    fun createRect(width: Number, height: Number): Rect2<R>
+    fun createMutableRect(width: Number, height: Number): MutableRect2<R>
+    fun createRect(top: Number, left: Number, right: Number, bottom: Number): Rect2<R>
+    fun createMutableRect(top: Number, left: Number, right: Number, bottom: Number): Rect2<R>
 }
 
 class Geom2DFactory : Geom2Factory<Double> {
-    fun createPoint(x: Double = 0.0, y: Double = 0.0) = Point2D(x, y)
-    override fun createPoint(x: Number, y: Number) = Point2D(x, y)
-    override fun <R : Number> createPoint(src: Tuple2<R>) = Point2D.create(src)
+    /** Point2D creators  **/
+    fun createPoint(x: Double = 0.0, y: Double = 0.0): Point2<Double> = Point2D(x, y)
+    fun createMutablePoint(x: Double = 0.0, y: Double = 0.0): MutablePoint2<Double> = Point2D(x, y)
+    override fun createPoint(x: Number, y: Number): Point2<Double> = Point2D(x, y)
+    override fun createMutablePoint(x: Number, y: Number): MutablePoint2<Double> = Point2D(x, y)
+    override fun <T : Number> createPoint(src: Tuple2<T>): Point2<Double> = Point2D(src)
+    override fun <T : Number> createMutablePoint(src: Tuple2<T>): MutablePoint2<Double> = Point2D(src)
 
-    fun createVector(x: Double = 0.0, y: Double = 0.0) = Vector2D(x, y)
-    override fun createVector(x: Number, y: Number) = Vector2D(x, y)
-    override fun <R : Number> createVector(src: Tuple2<R>) = Vector2D.create(src)
+    /** Vector2D creators  **/
+    fun createVector(x: Double = 0.0, y: Double = 0.0): Vector2<Double> = Vector2D(x, y)
+    fun createMutableVector(x: Double = 0.0, y: Double = 0.0): MutableVector2<Double> = Vector2D(x, y)
+    override fun createVector(x: Number, y: Number): Vector2<Double> = Vector2D(x, y)
+    override fun createMutableVector(x: Number, y: Number): MutableVector2<Double> = Vector2D(x, y)
+    override fun <T : Number> createVector(src: Tuple2<T>): Vector2<Double> = Vector2D(src)
+    override fun <T : Number> createMutableVector(src: Tuple2<T>): MutableVector2<Double> = Vector2D(src)
 
-    override fun <R1 : Number, R2 : Number> createRect(bottomLeft: Tuple2<R1>, topRight: Tuple2<R2>) =
-        Rect2D.create(bottomLeft, topRight)
-    override fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number) =
-        Rect2D.create(center, width, height)
-    override fun createRect(width: Number, height: Number) = Rect2D.create(width, height)
-    override fun createRect(top: Number, left: Number, right: Number, bottom: Number) =
+    /** Rect2D creators  **/
+    override fun <T1 : Number, T2 : Number> createRect(
+        bottomLeft: Tuple2<T1>,
+        topRight: Tuple2<T2>
+    ): Rect2<Double> = Rect2D.create(bottomLeft, topRight)
+
+    override fun <T1 : Number, T2 : Number> createMutableRect(
+        bottomLeft: Tuple2<T1>,
+        topRight: Tuple2<T2>
+    ): MutableRect2<Double> = Rect2D.create(bottomLeft, topRight)
+
+    override fun <T : Number> createRect(
+        center: Tuple2<T>,
+        width: Number,
+        height: Number
+    ): Rect2<Double> = Rect2D.create(center, width, height)
+
+    override fun <T : Number> createMutableRect(
+        center: Tuple2<T>,
+        width: Number,
+        height: Number
+    ): MutableRect2<Double> = Rect2D.create(center, width, height)
+
+    override fun createRect(width: Number, height: Number): Rect2<Double> = Rect2D.create(width, height)
+    override fun createMutableRect(width: Number, height: Number): MutableRect2<Double> = Rect2D.create(width, height)
+    override fun createRect(top: Number, left: Number, right: Number, bottom: Number): Rect2<Double> =
+        Rect2D.create(top, left, right, bottom)
+    override fun createMutableRect(top: Number, left: Number, right: Number, bottom: Number): MutableRect2<Double> =
         Rect2D.create(top, left, right, bottom)
 }
 
 class Geom2FFactory : Geom2Factory<Float> {
-    fun createPoint(x: Float = 0.0f, y: Float = 0.0f) = Point2F(x, y)
-    override fun createPoint(x: Number, y: Number) = Point2F(x, y)
-    override fun <R : Number> createPoint(src: Tuple2<R>) = Point2F.create(src)
+    /** Point2F creators  **/
+    fun createPoint(x: Float = 0f, y: Float = 0f): Point2<Float> = Point2F(x, y)
+    fun createMutablePoint(x: Float = 0f, y: Float = 0f): MutablePoint2<Float> = Point2F(x, y)
+    override fun createPoint(x: Number, y: Number): Point2<Float> = Point2F(x, y)
+    override fun createMutablePoint(x: Number, y: Number): MutablePoint2<Float> = Point2F(x, y)
+    override fun <T : Number> createPoint(src: Tuple2<T>): Point2<Float> = Point2F(src)
+    override fun <T : Number> createMutablePoint(src: Tuple2<T>): MutablePoint2<Float> = Point2F(src)
 
-    fun createVector(x: Float = 0.0f, y: Float = 0.0f) = Vector2F(x, y)
-    override fun createVector(x: Number, y: Number) = Vector2F(x, y)
-    override fun <R : Number> createVector(src: Tuple2<R>) = Vector2F.create(src)
+    /** Vector2F creators  **/
+    fun createVector(x: Float = 0f, y: Float = 0f): Vector2<Float> = Vector2F(x, y)
+    fun createMutableVector(x: Float = 0f, y: Float = 0f): MutableVector2<Float> = Vector2F(x, y)
+    override fun createVector(x: Number, y: Number): Vector2<Float> = Vector2F(x, y)
+    override fun createMutableVector(x: Number, y: Number): MutableVector2<Float> = Vector2F(x, y)
+    override fun <T : Number> createVector(src: Tuple2<T>): Vector2<Float> = Vector2F(src)
+    override fun <T : Number> createMutableVector(src: Tuple2<T>): MutableVector2<Float> = Vector2F(src)
 
-    override fun <R1 : Number, R2 : Number> createRect(bottomLeft: Tuple2<R1>, topRight: Tuple2<R2>) =
-        Rect2F.create(bottomLeft, topRight)
-    override fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number) =
-        Rect2F.create(center, width, height)
-    override fun createRect(width: Number, height: Number) = Rect2F.create(width, height)
-    override fun createRect(top: Number, left: Number, right: Number, bottom: Number) =
+    /** Rect2F creators  **/
+    override fun <T1 : Number, T2 : Number> createRect(
+        bottomLeft: Tuple2<T1>,
+        topRight: Tuple2<T2>
+    ): Rect2<Float> = Rect2F.create(bottomLeft, topRight)
+
+    override fun <T1 : Number, T2 : Number> createMutableRect(
+        bottomLeft: Tuple2<T1>,
+        topRight: Tuple2<T2>
+    ): MutableRect2<Float> = Rect2F.create(bottomLeft, topRight)
+
+    override fun <T : Number> createRect(
+        center: Tuple2<T>,
+        width: Number,
+        height: Number
+    ): Rect2<Float> = Rect2F.create(center, width, height)
+
+    override fun <T : Number> createMutableRect(
+        center: Tuple2<T>,
+        width: Number,
+        height: Number
+    ): MutableRect2<Float> = Rect2F.create(center, width, height)
+
+    override fun createRect(width: Number, height: Number): Rect2<Float> = Rect2F.create(width, height)
+    override fun createMutableRect(width: Number, height: Number): MutableRect2<Float> = Rect2F.create(width, height)
+    override fun createRect(top: Number, left: Number, right: Number, bottom: Number): Rect2<Float> =
+        Rect2F.create(top, left, right, bottom)
+    override fun createMutableRect(top: Number, left: Number, right: Number, bottom: Number): MutableRect2<Float> =
         Rect2F.create(top, left, right, bottom)
 }
 
 class Geom2IFactory : Geom2Factory<Int> {
-    fun createPoint(x: Int = 0, y: Int = 0) = Point2I(x, y)
-    override fun createPoint(x: Number, y: Number) = Point2I(x, y)
-    override fun <R : Number> createPoint(src: Tuple2<R>) = Point2I.create(src)
+    /** Point2I creators  **/
+    fun createPoint(x: Int = 0, y: Int = 0): Point2<Int> = Point2I(x, y)
+    fun createMutablePoint(x: Int = 0, y: Int = 0): MutablePoint2<Int> = Point2I(x, y)
+    override fun createPoint(x: Number, y: Number): Point2<Int> = Point2I(x, y)
+    override fun createMutablePoint(x: Number, y: Number): MutablePoint2<Int> = Point2I(x, y)
+    override fun <T : Number> createPoint(src: Tuple2<T>): Point2<Int> = Point2I(src)
+    override fun <T : Number> createMutablePoint(src: Tuple2<T>): MutablePoint2<Int> = Point2I(src)
 
-    fun createVector(x: Int = 0, y: Int = 0) = Vector2I(x, y)
-    override fun createVector(x: Number, y: Number) = Vector2I(x, y)
-    override fun <R : Number> createVector(src: Tuple2<R>) = Vector2I.create(src)
+    /** Vector2I creators  **/
+    fun createVector(x: Int = 0, y: Int = 0): Vector2<Int> = Vector2I(x, y)
+    fun createMutableVector(x: Int = 0, y: Int = 0): MutableVector2<Int> = Vector2I(x, y)
+    override fun createVector(x: Number, y: Number): Vector2<Int> = Vector2I(x, y)
+    override fun createMutableVector(x: Number, y: Number): MutableVector2<Int> = Vector2I(x, y)
+    override fun <T : Number> createVector(src: Tuple2<T>): Vector2<Int> = Vector2I(src)
+    override fun <T : Number> createMutableVector(src: Tuple2<T>): MutableVector2<Int> = Vector2I(src)
 
-    override fun <R1 : Number, R2 : Number> createRect(bottomLeft: Tuple2<R1>, topRight: Tuple2<R2>) =
-        Rect2I.create(bottomLeft, topRight)
-    override fun <R : Number> createRect(center: Tuple2<R>, width: Number, height: Number) =
-        Rect2I.create(center, width, height)
-    override fun createRect(width: Number, height: Number) = Rect2I.create(width, height)
-    override fun createRect(top: Number, left: Number, right: Number, bottom: Number) =
+    /** Rect2I creators  **/
+    override fun <T1 : Number, T2 : Number> createRect(
+        bottomLeft: Tuple2<T1>,
+        topRight: Tuple2<T2>
+    ): Rect2<Int> = Rect2I.create(bottomLeft, topRight)
+
+    override fun <T1 : Number, T2 : Number> createMutableRect(
+        bottomLeft: Tuple2<T1>,
+        topRight: Tuple2<T2>
+    ): MutableRect2<Int> = Rect2I.create(bottomLeft, topRight)
+
+    override fun <T : Number> createRect(
+        center: Tuple2<T>,
+        width: Number,
+        height: Number
+    ): Rect2<Int> = Rect2I.create(center, width, height)
+
+    override fun <T : Number> createMutableRect(
+        center: Tuple2<T>,
+        width: Number,
+        height: Number
+    ): MutableRect2<Int> = Rect2I.create(center, width, height)
+
+    override fun createRect(width: Number, height: Number): Rect2<Int> = Rect2I.create(width, height)
+    override fun createMutableRect(width: Number, height: Number): MutableRect2<Int> = Rect2I.create(width, height)
+    override fun createRect(top: Number, left: Number, right: Number, bottom: Number): Rect2<Int> =
+        Rect2I.create(top, left, right, bottom)
+    override fun createMutableRect(top: Number, left: Number, right: Number, bottom: Number): MutableRect2<Int> =
         Rect2I.create(top, left, right, bottom)
 }

@@ -13,15 +13,18 @@ interface Rect2<out T : Number> {
     val left: T
         get() = bottomLeft.x
 
+    val center: Point2<T>
+
     val width: T
     val height: T
 
     operator fun <R : Number> contains(pnt: Tuple2<R>): Boolean
+//    operator fun <R : Number> collision(rect: Rect2<R>): Boolean
 }
 
 interface MutableRect2<T : Number> : Rect2<T> {
-    override var bottomLeft: MutablePoint2<T>
-    override var topRight: MutablePoint2<T>
+    override val bottomLeft: MutablePoint2<T>
+    override val topRight: MutablePoint2<T>
 
     override var top: T
         get() = super.top
@@ -46,11 +49,32 @@ interface MutableRect2<T : Number> : Rect2<T> {
             bottomLeft.x = value
         }
 
+//    override var center: Point2<T>
+
     override var width: T
     override var height: T
 }
 
 sealed class Rect2Base<T : Number> : MutableRect2<T> {
+    override val center: Point2<T>
+        @Suppress("UNCHECKED_CAST")
+        get() = when (this) {
+            is Rect2D -> Point2D((topRight.x - bottomLeft.x) / 2, (topRight.y - bottomLeft.y) / 2)
+            is Rect2F -> Point2F((topRight.x - bottomLeft.x) / 2, (topRight.y - bottomLeft.y) / 2)
+            is Rect2I -> Point2I((topRight.x - bottomLeft.x) / 2, (topRight.y - bottomLeft.y) / 2)
+        } as Point2<T>
+//        set(value) {
+//            when (this) {
+//                is Rect2D -> {
+//                    val halfWidth = width/2
+//                    val halfHeight = height/2
+//                    topRight.x = value.x + halfWidth
+//                    topRight.y =
+//                }
+//                is Rect2F -> topRight.x = bottomLeft.x + value.toFloat()
+//                is Rect2I -> topRight.x = bottomLeft.x + value.toInt()
+//            }
+//        }
 
     override var width: T
         @Suppress("UNCHECKED_CAST")
@@ -90,17 +114,20 @@ sealed class Rect2Base<T : Number> : MutableRect2<T> {
 }
 
 data class Rect2D(
-    override var bottomLeft: MutablePoint2<Double>,
-    override var topRight: MutablePoint2<Double>
+    val bottomLeftPnt: Point2<Double>,
+    val topRightPnt: Point2<Double>
 ) : Rect2Base<Double>() {
+
+    override val bottomLeft: MutablePoint2<Double> = Point2D(bottomLeftPnt)
+    override val topRight: MutablePoint2<Double> = Point2D(topRightPnt)
 
     companion object {
         fun <T1 : Number, T2 : Number> create(lowLeft: Tuple2<T1>, upRight: Tuple2<T2>) =
-            Rect2D(Point2D.create(lowLeft), Point2D.create(upRight))
+            Rect2D(Point2D(lowLeft), Point2D(upRight))
 
         fun <T : Number> create(center: Tuple2<T>, width: Number, height: Number): Rect2D {
-            val centerPoint2D: Point2D = Point2D.create(center)
-            val halfVector2D: Vector2D = Vector2D(width, height).apply { scale(0.5) }
+            val centerPoint2D = Point2D(center)
+            val halfVector2D = Vector2D(width, height).scaled(0.5)
             return Rect2D(centerPoint2D - halfVector2D, centerPoint2D + halfVector2D)
         }
 
@@ -111,17 +138,20 @@ data class Rect2D(
 }
 
 data class Rect2F(
-    override var bottomLeft: MutablePoint2<Float>,
-    override var topRight: MutablePoint2<Float>
+    val bottomLeftPnt: Point2<Float>,
+    val topRightPnt: Point2<Float>
 ) : Rect2Base<Float>() {
+
+    override val bottomLeft: MutablePoint2<Float> = Point2F(bottomLeftPnt)
+    override val topRight: MutablePoint2<Float> = Point2F(topRightPnt)
 
     companion object {
         fun <T1 : Number, T2 : Number> create(lowLeft: Tuple2<T1>, upRight: Tuple2<T2>) =
-            Rect2F(Point2F.create(lowLeft), Point2F.create(upRight))
+            Rect2F(Point2F(lowLeft), Point2F(upRight))
 
         fun <T : Number> create(center: Tuple2<T>, width: Number, height: Number): Rect2F {
-            val centerPoint2F = Point2F.create(center)
-            val halfVector2F = Vector2F(width, height).apply { scale(0.5) }
+            val centerPoint2F = Point2F(center)
+            val halfVector2F = Vector2F(width, height).scaled(0.5)
             return Rect2F(centerPoint2F - halfVector2F, centerPoint2F + halfVector2F)
         }
 
@@ -132,17 +162,20 @@ data class Rect2F(
 }
 
 data class Rect2I(
-    override var bottomLeft: MutablePoint2<Int>,
-    override var topRight: MutablePoint2<Int>
+    val bottomLeftPnt: Point2<Int>,
+    val topRightPnt: Point2<Int>
 ) : Rect2Base<Int>() {
+
+    override val bottomLeft: MutablePoint2<Int> = Point2I(bottomLeftPnt)
+    override val topRight: MutablePoint2<Int> = Point2I(topRightPnt)
 
     companion object {
         fun <T1 : Number, T2 : Number> create(lowLeft: Tuple2<T1>, upRight: Tuple2<T2>) =
-            Rect2I(Point2I.create(lowLeft), Point2I.create(upRight))
+            Rect2I(Point2I(lowLeft), Point2I(upRight))
 
         fun <T : Number> create(center: Tuple2<T>, width: Number, height: Number): Rect2I {
-            val centerPoint2I = Point2I.create(center)
-            val halfVector2I = Vector2I(width, height).apply { scale(0.5) }
+            val centerPoint2I = Point2I(center)
+            val halfVector2I = Vector2I(width, height).scaled(0.5)
             return Rect2I(centerPoint2I - halfVector2I, centerPoint2I + halfVector2I)
         }
 
