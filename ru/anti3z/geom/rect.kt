@@ -18,7 +18,7 @@ interface Rect2<out T : Number> {
     val width: T
     val height: T
 
-    operator fun <R : Number> contains(pnt: Tuple2<R>): Boolean
+    operator fun contains(pnt: Tuple2<Number>): Boolean
 //    operator fun <R : Number> collision(rect: Rect2<R>): Boolean
 }
 
@@ -105,7 +105,7 @@ sealed class Rect2Base<T : Number> : MutableRect2<T> {
                 is Rect2I -> topRight.y = bottomLeft.y + value.toInt()
             }
 
-    override operator fun <R : Number> contains(pnt: Tuple2<R>) = when (this) {
+    override operator fun contains(pnt: Tuple2<Number>) = when (this) {
         is Rect2D -> (pnt.x.toDouble() in bottomLeft.x..topRight.x) && (pnt.y.toDouble() in bottomLeft.y..topRight.y)
         is Rect2F -> (pnt.x.toFloat() in bottomLeft.x..topRight.x) && (pnt.y.toFloat() in bottomLeft.y..topRight.y)
         is Rect2I -> (pnt.x.toInt() in bottomLeft.x..topRight.x) && (pnt.y.toInt() in bottomLeft.y..topRight.y)
@@ -122,10 +122,10 @@ data class Rect2D(
     override val topRight: MutablePoint2<Double> = Point2D(topRightPnt)
 
     companion object {
-        fun <T1 : Number, T2 : Number> create(lowLeft: Tuple2<T1>, upRight: Tuple2<T2>) =
+        fun create(lowLeft: Tuple2<Number>, upRight: Tuple2<Number>) =
             Rect2D(Point2D(lowLeft), Point2D(upRight))
 
-        fun <T : Number> create(center: Tuple2<T>, width: Number, height: Number): Rect2D {
+        fun create(center: Tuple2<Number>, width: Number, height: Number): Rect2D {
             val centerPoint2D = Point2D(center)
             val halfVector2D = Vector2D(width, height).scaled(0.5)
             return Rect2D(centerPoint2D - halfVector2D, centerPoint2D + halfVector2D)
@@ -146,10 +146,10 @@ data class Rect2F(
     override val topRight: MutablePoint2<Float> = Point2F(topRightPnt)
 
     companion object {
-        fun <T1 : Number, T2 : Number> create(lowLeft: Tuple2<T1>, upRight: Tuple2<T2>) =
+        fun create(lowLeft: Tuple2<Number>, upRight: Tuple2<Number>) =
             Rect2F(Point2F(lowLeft), Point2F(upRight))
 
-        fun <T : Number> create(center: Tuple2<T>, width: Number, height: Number): Rect2F {
+        fun create(center: Tuple2<Number>, width: Number, height: Number): Rect2F {
             val centerPoint2F = Point2F(center)
             val halfVector2F = Vector2F(width, height).scaled(0.5)
             return Rect2F(centerPoint2F - halfVector2F, centerPoint2F + halfVector2F)
@@ -170,10 +170,10 @@ data class Rect2I(
     override val topRight: MutablePoint2<Int> = Point2I(topRightPnt)
 
     companion object {
-        fun <T1 : Number, T2 : Number> create(lowLeft: Tuple2<T1>, upRight: Tuple2<T2>) =
+        fun create(lowLeft: Tuple2<Number>, upRight: Tuple2<Number>) =
             Rect2I(Point2I(lowLeft), Point2I(upRight))
 
-        fun <T : Number> create(center: Tuple2<T>, width: Number, height: Number): Rect2I {
+        fun create(center: Tuple2<Number>, width: Number, height: Number): Rect2I {
             val centerPoint2I = Point2I(center)
             val halfVector2I = Vector2I(width, height).scaled(0.5)
             return Rect2I(centerPoint2I - halfVector2I, centerPoint2I + halfVector2I)

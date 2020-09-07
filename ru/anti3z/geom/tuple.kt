@@ -12,6 +12,13 @@ interface Tuple2<out T : Number> {
 interface MutableTuple2<T : Number> : Tuple2<T> {
     override var x: T
     override var y: T
+
+    override fun toDouble(): MutableTuple2<Double>
+    override fun toFloat(): MutableTuple2<Float>
+    override fun toInt(): MutableTuple2<Int>
+
+    fun set(src: Tuple2<Number>)
+    fun set(x: Number = this.x, y: Number = this.y)
 }
 
 interface Tuple3<out T : Number> : Tuple2<T> {
@@ -24,4 +31,11 @@ interface Tuple3<out T : Number> : Tuple2<T> {
 
 interface MutableTuple3<T : Number> : Tuple3<T> {
     override var z: T
+
+    override fun toDouble(): MutableTuple3<Double>
+    override fun toFloat(): MutableTuple3<Float>
+    override fun toInt(): MutableTuple3<Int>
+
+    fun set(src: Tuple3<Number>)
+    fun set(x: Number = this.x, y: Number = this.y, z: Number = this.z)
 }

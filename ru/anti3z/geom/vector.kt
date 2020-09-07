@@ -3,26 +3,27 @@ package ru.anti3z.geom
 import kotlin.math.hypot
 
 interface Vector2<out T : Number> : Tuple2<T> {
-    operator fun <P : Number> plus(rhs: Vector2<P>): Vector2<T>
-    operator fun <P : Number> minus(rhs: Vector2<P>): Vector2<T>
+    operator fun plus(rhs: Vector2<Number>): Vector2<T>
+    operator fun minus(rhs: Vector2<Number>): Vector2<T>
+
+    operator fun times(rhs: Number): Vector2<T> = scaled(rhs.toDouble())
+    operator fun div(rhs: Number): Vector2<T> = scaled(1.0 / rhs.toDouble())
+
     operator fun unaryMinus(): Vector2<T>
-    fun scaled(factor: Number): Vector2<T>
-    fun <P : Number> dot(vec: Vector2<P>): T
+    fun scaled(factor: Double): Vector2<T>
 
-    operator fun times(rhs: Number) = scaled(rhs)
-    operator fun <P : Number> times(rhs: Vector2<P>) = dot(rhs)
-
-    operator fun div(rhs: Number) = scaled(1 / rhs.toDouble())
+    fun dot(vec: Vector2<Number>): T
+    operator fun times(rhs: Vector2<Number>): T = dot(rhs)
 
     val length: Double
         get() = hypot(x.toDouble(), y.toDouble())
 
-    fun lengthened(value: Double) = when {
-        length != 0.0 -> scaled(value / length)
-        else -> throw Exception("Cannot lengthened ZERO vector")
+    fun lengthened(value: Double): Vector2<T> {
+        require(value > 0.0) { "Length must be positive non-zero value, was $value" }
+        return scaled(value / length)
     }
 
-    fun normalized() = lengthened(1.0)
+    fun normalized(): Vector2<T> = lengthened(1.0)
 
     override fun toDouble(): Vector2<Double>
     override fun toFloat(): Vector2<Float>
@@ -32,29 +33,54 @@ interface Vector2<out T : Number> : Tuple2<T> {
 }
 
 interface MutableVector2<T : Number> : Vector2<T>, MutableTuple2<T> {
-    operator fun <P : Number> plusAssign(rhs: Vector2<P>)
-    operator fun <P : Number> minusAssign(rhs: Vector2<P>)
+    override operator fun plus(rhs: Vector2<Number>): MutableVector2<T>
+    override operator fun minus(rhs: Vector2<Number>): MutableVector2<T>
 
-    fun scale(factor: Number)
+    operator fun plusAssign(rhs: Vector2<Number>)
+    operator fun minusAssign(rhs: Vector2<Number>)
+
+    override operator fun times(rhs: Number): MutableVector2<T> = super.times(rhs) as MutableVector2<T>
+    override operator fun div(rhs: Number): MutableVector2<T> = super.div(rhs) as MutableVector2<T>
+
+    operator fun timesAssign(rhs: Number)
+    operator fun divAssign(rhs: Number)
+
+    override operator fun unaryMinus(): MutableVector2<T>
+    override fun scaled(factor: Double): MutableVector2<T>
+
+    fun scale(factor: Double)
     override var length: Double
         get() = super.length
-        set(value) = when {
-            length != 0.0 -> scale(value / length)
-            else -> throw Exception("Cannot lengthened ZERO vector")
+        set(value) {
+            require(value > 0.0) { "Length must be positive non-zero value, was $value" }
+            scale(value / length)
         }
 
     fun normalize() = scale(1.0)
+
+    override fun toDouble(): MutableVector2<Double>
+    override fun toFloat(): MutableVector2<Float>
+    override fun toInt(): MutableVector2<Int>
+
+    override fun toPoint(): MutablePoint2<T>
 }
 
 sealed class Vector2Base<T : Number> : MutableVector2<T> {
     @Suppress("UNCHECKED_CAST")
-    override operator fun <P : Number> plus(rhs: Vector2<P>): MutableVector2<T> = when (this) {
+    override operator fun plus(rhs: Vector2<Number>): MutableVector2<T> = when (this) {
         is Vector2D -> Vector2D(x + rhs.x.toDouble(), y + rhs.y.toDouble())
         is Vector2F -> Vector2F(x + rhs.x.toFloat(), y + rhs.y.toFloat())
         is Vector2I -> Vector2I(x + rhs.x.toInt(), y + rhs.y.toInt())
     } as Vector2Base<T>
 
-    override operator fun <P : Number> plusAssign(rhs: Vector2<P>) {
+    @Suppress("UNCHECKED_CAST")
+    override operator fun minus(rhs: Vector2<Number>): MutableVector2<T> = when (this) {
+        is Vector2D -> Vector2D(x - rhs.x.toDouble(), y - rhs.y.toDouble())
+        is Vector2F -> Vector2F(x - rhs.x.toFloat(), y - rhs.y.toFloat())
+        is Vector2I -> Vector2I(x - rhs.x.toInt(), y - rhs.y.toInt())
+    } as Vector2Base<T>
+
+    override operator fun plusAssign(rhs: Vector2<Number>) {
         when (this) {
             is Vector2D -> {
                 x += rhs.x.toDouble()
@@ -71,14 +97,7 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
-    override operator fun <P : Number> minus(rhs: Vector2<P>): MutableVector2<T> = when (this) {
-        is Vector2D -> Vector2D(x - rhs.x.toDouble(), y - rhs.y.toDouble())
-        is Vector2F -> Vector2F(x - rhs.x.toFloat(), y - rhs.y.toFloat())
-        is Vector2I -> Vector2I(x - rhs.x.toInt(), y - rhs.y.toInt())
-    } as Vector2Base<T>
-
-    override operator fun <P : Number> minusAssign(rhs: Vector2<P>) {
+    override operator fun minusAssign(rhs: Vector2<Number>) {
         when (this) {
             is Vector2D -> {
                 x -= rhs.x.toDouble()
@@ -102,54 +121,40 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
         is Vector2I -> Vector2I(-x, -y)
     } as Vector2Base<T>
 
-    override fun scale(factor: Number) {
+    override fun scale(factor: Double) {
         when (this) {
             is Vector2D -> {
-                val factorDouble = factor.toDouble()
-                x *= factorDouble
-                y *= factorDouble
+                x *= factor
+                y *= factor
             }
             is Vector2F -> {
-                val factorFloat = factor.toFloat()
-                x *= factorFloat
-                y *= factorFloat
+                x = (x*factor).toFloat()
+                y = (y*factor).toFloat()
             }
             is Vector2I -> {
-                val factorInt = factor.toInt()
-                x *= factorInt
-                y *= factorInt
+                x = (x*factor).toInt()
+                y = (y*factor).toInt()
             }
         }
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun scaled(factor: Number): MutableVector2<T> = when (this) {
-        is Vector2D -> {
-            val factorDouble = factor.toDouble()
-            val scaledX = x * factorDouble
-            val scaledY = y * factorDouble
-            Vector2D(scaledX, scaledY)
-        }
-        is Vector2F -> {
-            val factorDouble = factor.toDouble()
-            val scaledX = x * factorDouble
-            val scaledY = y * factorDouble
-            Vector2F(scaledX, scaledY)
-        }
-        is Vector2I -> {
-            val factorDouble = factor.toDouble()
-            val scaledX = x * factorDouble
-            val scaledY = y * factorDouble
-            Vector2D(scaledX, scaledY)
-        }
+    override fun scaled(factor: Double): MutableVector2<T> = when (this) {
+        is Vector2D -> Vector2D(x * factor, y * factor)
+        is Vector2F -> Vector2F(x * factor, y * factor)
+        is Vector2I -> Vector2D(x * factor, y * factor)
     } as Vector2Base<T>
 
     @Suppress("UNCHECKED_CAST")
-    override fun <P : Number> dot(vec: Vector2<P>): T = when (this) {
+    override fun dot(vec: Vector2<Number>): T = when (this) {
         is Vector2D -> (x * vec.x.toDouble() + y * vec.y.toDouble()) as T
         is Vector2F -> (x * vec.x.toFloat() + y * vec.y.toFloat()) as T
         is Vector2I -> (x * vec.x.toInt() + y * vec.y.toInt()) as T
     }
+
+    override fun timesAssign(rhs: Number) = scale(rhs.toDouble())
+
+    override fun divAssign(rhs: Number) = scale(1.0/rhs.toDouble())
 
     override fun toDouble(): MutableVector2<Double> = when (this) {
         is Vector2D -> this
@@ -166,6 +171,40 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
         else -> Vector2I(x, y)
     }
 
+    override fun set(src: Tuple2<Number>) {
+        when (this) {
+            is Vector2D -> {
+                x = src.x.toDouble()
+                y = src.y.toDouble()
+            }
+            is Vector2F -> {
+                x = src.x.toFloat()
+                y = src.y.toFloat()
+            }
+            is Vector2I -> {
+                x = src.x.toInt()
+                y = src.y.toInt()
+            }
+        }
+    }
+
+    override fun set(x: Number, y: Number) {
+        when (this) {
+            is Vector2D -> {
+                this.x = x.toDouble()
+                this.y = y.toDouble()
+            }
+            is Vector2F -> {
+                this.x = x.toFloat()
+                this.y = y.toFloat()
+            }
+            is Vector2I -> {
+                this.x = x.toInt()
+                this.y = y.toInt()
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     override fun toPoint(): MutablePoint2<T> = when (this) {
         is Vector2D -> Point2D(x, y)
@@ -178,46 +217,52 @@ data class Vector2D(override var x: Double = 0.0, override var y: Double = 0.0) 
     constructor(x: Number, y: Number) : this(x.toDouble(), y.toDouble())
     constructor(src: Tuple2<Number>) : this(src.x, src.y)
 
-    override operator fun <R : Number> plus(rhs: Vector2<R>) = super.plus(rhs) as Vector2D
-    override operator fun <R : Number> minus(rhs: Vector2<R>) = super.minus(rhs) as Vector2D
+    override operator fun plus(rhs: Vector2<Number>) = super.plus(rhs) as Vector2D
+    override operator fun minus(rhs: Vector2<Number>) = super.minus(rhs) as Vector2D
     override operator fun unaryMinus() = super.unaryMinus() as Vector2D
-    override fun scaled(factor: Number) = super.scaled(factor) as Vector2D
+    override fun scaled(factor: Double) = super.scaled(factor) as Vector2D
 
     override operator fun times(rhs: Number) = super.times(rhs) as Vector2D
     override operator fun div(rhs: Number) = super.times(rhs) as Vector2D
 
     override fun lengthened(value: Double) = super.lengthened(value) as Vector2D
     override fun normalized() = super.normalized() as Vector2D
+
+    override fun toPoint() = super.toPoint() as Point2D
 }
 
 data class Vector2F(override var x: Float = 0.0f, override var y: Float = 0.0f) : Vector2Base<Float>() {
     constructor(x: Number, y: Number) : this(x.toFloat(), y.toFloat())
     constructor(src: Tuple2<Number>) : this(src.x, src.y)
 
-    override operator fun <R : Number> plus(rhs: Vector2<R>) = super.plus(rhs) as Vector2F
-    override operator fun <R : Number> minus(rhs: Vector2<R>) = super.minus(rhs) as Vector2F
+    override operator fun plus(rhs: Vector2<Number>) = super.plus(rhs) as Vector2F
+    override operator fun minus(rhs: Vector2<Number>) = super.minus(rhs) as Vector2F
     override operator fun unaryMinus() = super.unaryMinus() as Vector2F
-    override fun scaled(factor: Number) = super.scaled(factor) as Vector2F
+    override fun scaled(factor: Double) = super.scaled(factor) as Vector2F
 
     override operator fun times(rhs: Number) = super.times(rhs) as Vector2F
     override operator fun div(rhs: Number) = super.times(rhs) as Vector2F
 
     override fun lengthened(value: Double) = super.lengthened(value) as Vector2F
     override fun normalized() = super.normalized() as Vector2F
+
+    override fun toPoint() = super.toPoint() as Point2F
 }
 
 data class Vector2I(override var x: Int = 0, override var y: Int = 0) : Vector2Base<Int>() {
     constructor(x: Number, y: Number) : this(x.toInt(), y.toInt())
     constructor(src: Tuple2<Number>) : this(src.x, src.y)
 
-    override operator fun <R : Number> plus(rhs: Vector2<R>) = super.plus(rhs) as Vector2I
-    override operator fun <R : Number> minus(rhs: Vector2<R>) = super.minus(rhs) as Vector2I
+    override operator fun plus(rhs: Vector2<Number>) = super.plus(rhs) as Vector2I
+    override operator fun minus(rhs: Vector2<Number>) = super.minus(rhs) as Vector2I
     override operator fun unaryMinus() = super.unaryMinus() as Vector2I
-    override fun scaled(factor: Number) = super.scaled(factor) as Vector2I
+    override fun scaled(factor: Double) = super.scaled(factor) as Vector2I
 
     override operator fun times(rhs: Number) = super.times(rhs) as Vector2I
     override operator fun div(rhs: Number) = super.times(rhs) as Vector2I
 
     override fun lengthened(value: Double) = super.lengthened(value) as Vector2I
     override fun normalized() = super.normalized() as Vector2I
+
+    override fun toPoint() = super.toPoint() as Point2I
 }

@@ -29,13 +29,13 @@ fun main() {
 
 
     //Vector2D Primary constructor
-    var v1d = Vector2D(2.0, 5.0)
+    val v1d = Vector2D(2.0, 5.0)
     println("$v1d")
     assertEquals(2.0, v1d.x)
     assertEquals(5.0, v1d.y)
 
     //Vector2F Secondary constructor
-    var v2f = Vector2F(3, 4.0)
+    val v2f = Vector2F(3, 4.0)
     println("$v2f")
     assertEquals(3.0f, v2f.x)
     assertEquals(4.0f, v2f.y)
@@ -58,7 +58,7 @@ fun main() {
     assertEquals(9.0, v4.y)
 
 
-    val b1d = geom2DFactory.createRect(v1d, 5, 5)
+    val b1d = geom2DFactory.createMutableRect(v1d, 5, 5)
     println("$b1d")
     println("${b1d.top}")
     b1d.top = 8.0
@@ -95,6 +95,6 @@ fun main() {
     val v5 = v2f.scaled(3.0)
     println("$v5")
 
-    var z = Point2D()
+    val z = Point2D()
     z += v1d
 }
