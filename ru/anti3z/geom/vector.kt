@@ -223,7 +223,7 @@ data class Vector2D(override var x: Double = 0.0, override var y: Double = 0.0) 
     override fun scaled(factor: Double) = super.scaled(factor) as Vector2D
 
     override operator fun times(rhs: Number) = super.times(rhs) as Vector2D
-    override operator fun div(rhs: Number) = super.times(rhs) as Vector2D
+    override operator fun div(rhs: Number) = super.div(rhs) as Vector2D
 
     override fun lengthened(value: Double) = super.lengthened(value) as Vector2D
     override fun normalized() = super.normalized() as Vector2D
@@ -241,7 +241,7 @@ data class Vector2F(override var x: Float = 0.0f, override var y: Float = 0.0f) 
     override fun scaled(factor: Double) = super.scaled(factor) as Vector2F
 
     override operator fun times(rhs: Number) = super.times(rhs) as Vector2F
-    override operator fun div(rhs: Number) = super.times(rhs) as Vector2F
+    override operator fun div(rhs: Number) = super.div(rhs) as Vector2F
 
     override fun lengthened(value: Double) = super.lengthened(value) as Vector2F
     override fun normalized() = super.normalized() as Vector2F
@@ -259,7 +259,7 @@ data class Vector2I(override var x: Int = 0, override var y: Int = 0) : Vector2B
     override fun scaled(factor: Double) = super.scaled(factor) as Vector2I
 
     override operator fun times(rhs: Number) = super.times(rhs) as Vector2I
-    override operator fun div(rhs: Number) = super.times(rhs) as Vector2I
+    override operator fun div(rhs: Number) = super.div(rhs) as Vector2I
 
     override fun lengthened(value: Double) = super.lengthened(value) as Vector2I
     override fun normalized() = super.normalized() as Vector2I
