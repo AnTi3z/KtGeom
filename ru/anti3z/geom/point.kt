@@ -134,26 +134,14 @@ sealed class Point2Base<T : Number> : MutablePoint2<T> {
 data class Point2D(override var x: Double = 0.0, override var y: Double = 0.0) : Point2Base<Double>() {
     constructor(x: Number, y: Number) : this(x.toDouble(), y.toDouble())
     constructor(src: Tuple2<Number>) : this(src.x, src.y)
-
-    override operator fun plus(rhs: Vector2<Number>) = super.plus(rhs) as Point2D
-    override operator fun minus(rhs: Vector2<Number>) = super.minus(rhs) as Point2D
-    override fun toVector() = super.toVector() as Vector2D
 }
 
 data class Point2F(override var x: Float = 0.0f, override var y: Float = 0.0f) : Point2Base<Float>() {
     constructor(x: Number, y: Number) : this(x.toFloat(), y.toFloat())
     constructor(src: Tuple2<Number>) : this(src.x, src.y)
-
-    override operator fun plus(rhs: Vector2<Number>) = super.plus(rhs) as Point2F
-    override operator fun minus(rhs: Vector2<Number>) = super.minus(rhs) as Point2F
-    override fun toVector() = super.toVector() as Vector2F
 }
 
 data class Point2I(override var x: Int = 0, override var y: Int = 0) : Point2Base<Int>() {
     constructor(x: Number, y: Number) : this(x.toInt(), y.toInt())
     constructor(src: Tuple2<Number>) : this(src.x, src.y)
-
-    override operator fun plus(rhs: Vector2<Number>) = super.plus(rhs) as Point2I
-    override operator fun minus(rhs: Vector2<Number>) = super.minus(rhs) as Point2I
-    override fun toVector() = super.toVector() as Vector2I
 }
