@@ -23,7 +23,7 @@ interface Vector2<out T : Number> : Tuple2<T> {
         return scaled(value / length)
     }
 
-    fun normalized(): Vector2<T> = lengthened(1.0)
+    fun normalized(): Vector2<T> = scaled(1.0 / length)
 
     override fun toDouble(): Vector2<Double>
     override fun toFloat(): Vector2<Float>
@@ -56,7 +56,7 @@ interface MutableVector2<T : Number> : Vector2<T>, MutableTuple2<T> {
             scale(value / length)
         }
 
-    fun normalize() = scale(1.0)
+    fun normalize() = scale(1.0 / length)
 
     override fun toDouble(): MutableVector2<Double>
     override fun toFloat(): MutableVector2<Float>
