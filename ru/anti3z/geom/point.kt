@@ -31,14 +31,14 @@ sealed class Point2Base<T : Number> : MutablePoint2<T> {
         is Point2D -> Point2D(x + rhs.x.toDouble(), y + rhs.y.toDouble())
         is Point2F -> Point2F(x + rhs.x.toFloat(), y + rhs.y.toFloat())
         is Point2I -> Point2I(x + rhs.x.toInt(), y + rhs.y.toInt())
-    } as Point2Base<T>
+    } as MutablePoint2<T>
 
     @Suppress("UNCHECKED_CAST")
     override operator fun minus(rhs: Vector2<*>): MutablePoint2<T> = when (this) {
         is Point2D -> Point2D(x - rhs.x.toDouble(), y - rhs.y.toDouble())
         is Point2F -> Point2F(x - rhs.x.toFloat(), y - rhs.y.toFloat())
         is Point2I -> Point2I(x - rhs.x.toInt(), y - rhs.y.toInt())
-    } as Point2Base<T>
+    } as MutablePoint2<T>
 
     override operator fun plusAssign(rhs: Vector2<*>) {
         when (this) {
@@ -128,7 +128,7 @@ sealed class Point2Base<T : Number> : MutablePoint2<T> {
         is Point2D -> Vector2D(x, y)
         is Point2F -> Vector2F(x, y)
         is Point2I -> Vector2I(x, y)
-    } as Vector2Base<T>
+    } as MutableVector2<T>
 }
 
 data class Point2D(override var x: Double = 0.0, override var y: Double = 0.0) : Point2Base<Double>() {

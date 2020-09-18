@@ -71,14 +71,14 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
         is Vector2D -> Vector2D(x + rhs.x.toDouble(), y + rhs.y.toDouble())
         is Vector2F -> Vector2F(x + rhs.x.toFloat(), y + rhs.y.toFloat())
         is Vector2I -> Vector2I(x + rhs.x.toInt(), y + rhs.y.toInt())
-    } as Vector2Base<T>
+    } as MutableVector2<T>
 
     @Suppress("UNCHECKED_CAST")
     override operator fun minus(rhs: Vector2<*>): MutableVector2<T> = when (this) {
         is Vector2D -> Vector2D(x - rhs.x.toDouble(), y - rhs.y.toDouble())
         is Vector2F -> Vector2F(x - rhs.x.toFloat(), y - rhs.y.toFloat())
         is Vector2I -> Vector2I(x - rhs.x.toInt(), y - rhs.y.toInt())
-    } as Vector2Base<T>
+    } as MutableVector2<T>
 
     override operator fun plusAssign(rhs: Vector2<*>) {
         when (this) {
@@ -119,7 +119,7 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
         is Vector2D -> Vector2D(-x, -y)
         is Vector2F -> Vector2F(-x, -y)
         is Vector2I -> Vector2I(-x, -y)
-    } as Vector2Base<T>
+    } as MutableVector2<T>
 
     override fun scale(factor: Double) {
         when (this) {
@@ -143,7 +143,7 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
         is Vector2D -> Vector2D(x * factor, y * factor)
         is Vector2F -> Vector2F(x * factor, y * factor)
         is Vector2I -> Vector2D(x * factor, y * factor)
-    } as Vector2Base<T>
+    } as MutableVector2<T>
 
     @Suppress("UNCHECKED_CAST")
     override fun dot(vec: Vector2<*>): T = when (this) {
@@ -210,7 +210,7 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
         is Vector2D -> Point2D(x, y)
         is Vector2F -> Point2F(x, y)
         is Vector2I -> Point2I(x, y)
-    } as Point2Base<T>
+    } as MutablePoint2<T>
 }
 
 data class Vector2D(override var x: Double = 0.0, override var y: Double = 0.0) : Vector2Base<Double>() {
