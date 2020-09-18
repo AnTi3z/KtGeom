@@ -20,7 +20,7 @@ interface MutableTuple2<T : Number> : Tuple2<T> {
     override fun toFloat(): MutableTuple2<Float>
     override fun toInt(): MutableTuple2<Int>
 
-    fun set(src: Tuple2<Number>)
+    fun set(src: Tuple2<*>)
     fun set(x: Number = this.x, y: Number = this.y)
 }
 
@@ -41,6 +41,6 @@ interface MutableTuple3<T : Number> : Tuple3<T> {
     override fun toFloat(): MutableTuple3<Float>
     override fun toInt(): MutableTuple3<Int>
 
-    fun set(src: Tuple3<Number>)
+    fun set(src: Tuple3<*>)
     fun set(x: Number = this.x, y: Number = this.y, z: Number = this.z)
 }
