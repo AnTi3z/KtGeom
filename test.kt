@@ -102,13 +102,13 @@ fun main() {
     val target = geom2FFactory.createVector(5.0, 5.0)
     val position = geom2FFactory.createPoint(1.0, 1.0)
     val speed = geom2FFactory.createMutableVector(0.0, 0.0)
-    val tmp1 = target - position.toVector()
+    val tmp1 = target - position.toVector2()
     println(tmp1)
-    var tmp2 = (target - position.toVector()) / 10f
+    var tmp2 = (target - position.toVector2()) / 10f
     println(tmp2)
-    tmp2 = (target - position.toVector()) * 10f
+    tmp2 = (target - position.toVector2()) * 10f
     println(tmp2)
-    tmp2 = (target - position.toVector()) / 1.5f
+    tmp2 = (target - position.toVector2()) / 1.5f
     println(tmp2)
     speed.set(tmp2)
     println(speed * 0.5)

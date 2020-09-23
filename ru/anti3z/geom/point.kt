@@ -28,7 +28,6 @@ interface Point2<out T : Number> : Tuple2<T> {
     override fun toFloat(): Point2<Float>
     override fun toInt(): Point2<Int>
 
-//    fun toVector(): Vector2<T>
     fun distance(point: Point2<*>): Double
     fun vectorTo(point: Point2<*>): Vector2<T>
 }
@@ -44,7 +43,6 @@ interface MutablePoint2<T : Number> : Point2<T>, MutableTuple2<T> {
     override fun toFloat(): MutablePoint2<Float>
     override fun toInt(): MutablePoint2<Int>
 
-//    override fun toVector(): MutableVector2<T>
     override fun vectorTo(point: Point2<*>): MutableVector2<T>
 }
 
@@ -145,13 +143,6 @@ sealed class Point2Base<T : Number> : MutablePoint2<T> {
             }
         }
     }
-
-//    @Suppress("UNCHECKED_CAST")
-//    override fun toVector(): MutableVector2<T> = when (this) {
-//        is Point2D -> Vector2D(x, y)
-//        is Point2F -> Vector2F(x, y)
-//        is Point2I -> Vector2I(x, y)
-//    } as MutableVector2<T>
 
     override fun distance(point: Point2<*>): Double = vectorTo(point).length
 

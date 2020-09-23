@@ -48,8 +48,6 @@ interface Vector2<out T : Number> : Tuple2<T> {
     override fun toDouble(): Vector2<Double>
     override fun toFloat(): Vector2<Float>
     override fun toInt(): Vector2<Int>
-
-//    fun toPoint(): Point2<T>
 }
 
 interface MutableVector2<T : Number> : Vector2<T>, MutableTuple2<T> {
@@ -81,8 +79,6 @@ interface MutableVector2<T : Number> : Vector2<T>, MutableTuple2<T> {
     override fun toDouble(): MutableVector2<Double>
     override fun toFloat(): MutableVector2<Float>
     override fun toInt(): MutableVector2<Int>
-
-//    override fun toPoint(): MutablePoint2<T>
 }
 
 sealed class Vector2Base<T : Number> : MutableVector2<T> {
@@ -224,13 +220,6 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
             }
         }
     }
-
-//    @Suppress("UNCHECKED_CAST")
-//    override fun toPoint(): MutablePoint2<T> = when (this) {
-//        is Vector2D -> Point2D(x, y)
-//        is Vector2F -> Point2F(x, y)
-//        is Vector2I -> Point2I(x, y)
-//    } as MutablePoint2<T>
 }
 
 data class Vector2D(override var x: Double = 0.0, override var y: Double = 0.0) : Vector2Base<Double>() {
