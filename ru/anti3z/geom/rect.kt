@@ -159,6 +159,22 @@ sealed class Rect2Base<T : Number> : MutableRect2<T> {
     override fun toString(): String {
         return "${this::class.simpleName}(bottom=${blPoint.y}, left=${blPoint.x}, top=${trPoint.y}, right=${trPoint.x})"
     }
+
+    override fun hashCode(): Int {
+        var result = blPoint.hashCode()
+        result = 31 * result + trPoint.hashCode()
+        return result
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Rect2Base<*>) return false
+
+        if (blPoint != other.blPoint) return false
+        if (trPoint != other.trPoint) return false
+
+        return true
+    }
 }
 
 class Rect2D(
