@@ -21,7 +21,8 @@ interface Rect2<out T : Number> {
     val height: T
 
     operator fun contains(pnt: Tuple2<*>): Boolean
-//    fun collision(other: Rect2<*>): Boolean
+    fun collision(other: Rect2<*>): Boolean
+    fun collision(other: Circle2<*>): Boolean
 }
 
 interface MutableRect2<T : Number> : Rect2<T> {
@@ -155,6 +156,10 @@ sealed class Rect2Base<T : Number> : MutableRect2<T> {
         is Rect2F -> (pnt.x.toFloat() in bottomLeft.x..topRight.x) && (pnt.y.toFloat() in bottomLeft.y..topRight.y)
         is Rect2I -> (pnt.x.toInt() in bottomLeft.x..topRight.x) && (pnt.y.toInt() in bottomLeft.y..topRight.y)
     }
+
+    override fun collision(other: Rect2<*>): Boolean = collision(this, other)
+
+    override fun collision(other: Circle2<*>): Boolean = collision(this, other)
 
     override fun toString(): String {
         return "${this::class.simpleName}(bottom=${blPoint.y}, left=${blPoint.x}, top=${trPoint.y}, right=${trPoint.x})"
