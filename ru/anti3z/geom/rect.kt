@@ -42,10 +42,8 @@ interface MutableRect2<T : Number> : Rect2<T> {
     override var height: T
 }
 
-sealed class Rect2Base<T : Number>(bl: Tuple2<T>, tr: Tuple2<T>) : MutableRect2<T> {
-
-    private val blPoint: MutablePoint2<T> = bl.toMutablePoint2()
-    private val trPoint: MutablePoint2<T> = tr.toMutablePoint2()
+sealed class Rect2Base<T : Number>(private val blPoint: MutablePoint2<T>,
+                                   private val trPoint: MutablePoint2<T>) : MutableRect2<T> {
 
     override var top: T
         get() = trPoint.y
@@ -196,16 +194,16 @@ sealed class Rect2Base<T : Number>(bl: Tuple2<T>, tr: Tuple2<T>) : MutableRect2<
 }
 
 class Rect2D(
-        point1: Tuple2<Double>,
-        point2: Tuple2<Double>,
+        point1: Tuple2<*>,
+        point2: Tuple2<*>
 ) : Rect2Base<Double>(
-        Point2D(minOf(point1.x, point2.x), minOf(point1.y, point2.y)),
-        Point2D(maxOf(point1.x, point2.x), maxOf(point1.y, point2.y))
+        Point2D(minOf(point1.x.toDouble(), point2.x.toDouble()),    /** left **/
+                minOf(point1.y.toDouble(), point2.y.toDouble())),   /** bottom **/
+        Point2D(maxOf(point1.x.toDouble(), point2.x.toDouble()),    /** right **/
+                maxOf(point1.y.toDouble(), point2.y.toDouble()))    /** top **/
 ) {
 
     companion object {
-        fun create(point1: Tuple2<*>, point2: Tuple2<*>) = Rect2D(point1.toDouble(), point2.toDouble())
-
         fun create(center: Tuple2<*>, width: Number, height: Number): Rect2D {
             val centerPoint2D = Point2D(center)
             val halfVector2D = Vector2D(width, height) / 2
@@ -219,16 +217,16 @@ class Rect2D(
 }
 
 class Rect2F(
-        point1: Tuple2<Float>,
-        point2: Tuple2<Float>,
+        point1: Tuple2<*>,
+        point2: Tuple2<*>
 ) : Rect2Base<Float>(
-        Point2F(minOf(point1.x, point2.x), minOf(point1.y, point2.y)),
-        Point2F(maxOf(point1.x, point2.x), maxOf(point1.y, point2.y))
+        Point2F(minOf(point1.x.toFloat(), point2.x.toFloat()),    /** left **/
+                minOf(point1.y.toFloat(), point2.y.toFloat())),   /** bottom **/
+        Point2F(maxOf(point1.x.toFloat(), point2.x.toFloat()),    /** right **/
+                maxOf(point1.y.toFloat(), point2.y.toFloat()))    /** top **/
 ) {
 
     companion object {
-        fun create(point1: Tuple2<*>, point2: Tuple2<*>) = Rect2F(point1.toFloat(), point2.toFloat())
-
         fun create(center: Tuple2<*>, width: Number, height: Number): Rect2F {
             val centerPoint2F = Point2F(center)
             val halfVector2F = Vector2F(width, height) / 2
@@ -242,16 +240,16 @@ class Rect2F(
 }
 
 class Rect2I(
-        point1: Tuple2<Int>,
-        point2: Tuple2<Int>,
+        point1: Tuple2<*>,
+        point2: Tuple2<*>
 ) : Rect2Base<Int>(
-        Point2I(minOf(point1.x, point2.x), minOf(point1.y, point2.y)),
-        Point2I(maxOf(point1.x, point2.x), maxOf(point1.y, point2.y))
+        Point2I(minOf(point1.x.toInt(), point2.x.toInt()),    /** left **/
+                minOf(point1.y.toInt(), point2.y.toInt())),   /** bottom **/
+        Point2I(maxOf(point1.x.toInt(), point2.x.toInt()),    /** right **/
+                maxOf(point1.y.toInt(), point2.y.toInt()))    /** top **/
 ) {
 
     companion object {
-        fun create(point1: Tuple2<*>, point2: Tuple2<*>) = Rect2I(point1.toInt(), point2.toInt())
-
         fun create(center: Tuple2<*>, width: Number, height: Number): Rect2I {
             val centerPoint2I = Point2I(center)
             val halfVector2I = Vector2I(width, height) / 2

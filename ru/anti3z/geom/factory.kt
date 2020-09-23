@@ -39,10 +39,9 @@ class Geom2DFactory : Geom2Factory<Double> {
     override fun createMutableVector(src: Tuple2<*>): MutableVector2<Double> = Vector2D(src)
 
     /** Rect2D creators  **/
-    override fun createRect(point1: Tuple2<*>, point2: Tuple2<*>): Rect2<Double> = Rect2D.create(point1, point2)
+    override fun createRect(point1: Tuple2<*>, point2: Tuple2<*>): Rect2<Double> = Rect2D(point1, point2)
 
-    override fun createMutableRect(point1: Tuple2<*>, point2: Tuple2<*>): MutableRect2<Double> =
-            Rect2D.create(point1, point2)
+    override fun createMutableRect(point1: Tuple2<*>, point2: Tuple2<*>): MutableRect2<Double> = Rect2D(point1, point2)
 
     override fun createRect(center: Tuple2<*>, width: Number, height: Number): Rect2<Double> =
             Rect2D.create(center, width, height)
@@ -77,10 +76,9 @@ class Geom2FFactory : Geom2Factory<Float> {
     override fun createMutableVector(src: Tuple2<*>): MutableVector2<Float> = Vector2F(src)
 
     /** Rect2F creators  **/
-    override fun createRect(point1: Tuple2<*>, point2: Tuple2<*>): Rect2<Float> = Rect2F.create(point1, point2)
+    override fun createRect(point1: Tuple2<*>, point2: Tuple2<*>): Rect2<Float> = Rect2F(point1, point2)
 
-    override fun createMutableRect(point1: Tuple2<*>, point2: Tuple2<*>): MutableRect2<Float> =
-            Rect2F.create(point1, point2)
+    override fun createMutableRect(point1: Tuple2<*>, point2: Tuple2<*>): MutableRect2<Float> = Rect2F(point1, point2)
 
     override fun createRect(center: Tuple2<*>, width: Number, height: Number): Rect2<Float> =
             Rect2F.create(center, width, height)
@@ -115,10 +113,9 @@ class Geom2IFactory : Geom2Factory<Int> {
     override fun createMutableVector(src: Tuple2<*>): MutableVector2<Int> = Vector2I(src)
 
     /** Rect2I creators  **/
-    override fun createRect(point1: Tuple2<*>, point2: Tuple2<*>): Rect2<Int> = Rect2I.create(point1, point2)
+    override fun createRect(point1: Tuple2<*>, point2: Tuple2<*>): Rect2<Int> = Rect2I(point1, point2)
 
-    override fun createMutableRect(point1: Tuple2<*>, point2: Tuple2<*>): MutableRect2<Int> =
-            Rect2I.create(point1, point2)
+    override fun createMutableRect(point1: Tuple2<*>, point2: Tuple2<*>): MutableRect2<Int> = Rect2I(point1, point2)
 
     override fun createRect(center: Tuple2<*>, width: Number, height: Number): Rect2<Int> =
             Rect2I.create(center, width, height)

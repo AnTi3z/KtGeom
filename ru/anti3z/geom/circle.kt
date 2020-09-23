@@ -18,8 +18,7 @@ interface MutableCircle2<T : Number> : Circle2<T> {
     fun setCenter(x: T = center.x, y: T = center.y )
 }
 
-sealed class Circle2Base<T : Number>(center: Tuple2<T>, override var radius: T) : MutableCircle2<T> {
-    private val centerPoint: MutablePoint2<T> = center.toMutablePoint2()
+sealed class Circle2Base<T : Number>(private val centerPoint: MutablePoint2<T>, override var radius: T) : MutableCircle2<T> {
 
     override var center: Point2<T>
         get() = centerPoint
@@ -80,6 +79,6 @@ sealed class Circle2Base<T : Number>(center: Tuple2<T>, override var radius: T) 
     }
 }
 
-class Circle2D(center: Point2<*>, radius: Number) : Circle2Base<Double>(center.toDouble(), radius.toDouble())
-class Circle2F(center: Tuple2<*>, radius: Number) : Circle2Base<Float>(center.toFloat(), radius.toFloat())
-class Circle2I(center: Tuple2<*>, radius: Number) : Circle2Base<Int>(center.toInt(), radius.toInt())
+class Circle2D(center: Tuple2<*>, radius: Number) : Circle2Base<Double>(Point2D(center), radius.toDouble())
+class Circle2F(center: Tuple2<*>, radius: Number) : Circle2Base<Float>(Point2F(center), radius.toFloat())
+class Circle2I(center: Tuple2<*>, radius: Number) : Circle2Base<Int>(Point2I(center), radius.toInt())
