@@ -114,4 +114,10 @@ fun main() {
     println(speed * 0.5)
     println(speed * 1)
     println(speed * 10)
+    println("!!!!!!!!")
+    val r2d = Rect2D(Point2D(5, 1), Point2D(1, 10))
+    r2d.top = 11.0
+    val r2d2 = Rect2D(Point2D(1.0, 1.0), Point2D(5.0, 11.0))
+    println(r2d)
+    println(r2d == r2d2)
 }

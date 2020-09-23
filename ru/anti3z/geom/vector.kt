@@ -2,6 +2,26 @@ package ru.anti3z.geom
 
 import kotlin.math.hypot
 
+fun <T : Number> Tuple2<T>.toVector2(): Vector2<T> {
+    @Suppress("UNCHECKED_CAST")
+    return when (this.x) {
+        is Double -> Vector2D(this)
+        is Float -> Vector2F(this)
+        is Int -> Vector2I(this)
+        else -> throw IllegalArgumentException()
+    } as Vector2<T>
+}
+
+fun <T : Number> Tuple2<T>.toMutableVector2(): MutableVector2<T> {
+    @Suppress("UNCHECKED_CAST")
+    return when (this.x) {
+        is Double -> Vector2D(this)
+        is Float -> Vector2F(this)
+        is Int -> Vector2I(this)
+        else -> throw IllegalArgumentException()
+    } as MutableVector2<T>
+}
+
 interface Vector2<out T : Number> : Tuple2<T> {
     operator fun plus(rhs: Vector2<*>): Vector2<T>
     operator fun minus(rhs: Vector2<*>): Vector2<T>
@@ -29,7 +49,7 @@ interface Vector2<out T : Number> : Tuple2<T> {
     override fun toFloat(): Vector2<Float>
     override fun toInt(): Vector2<Int>
 
-    fun toPoint(): Point2<T>
+//    fun toPoint(): Point2<T>
 }
 
 interface MutableVector2<T : Number> : Vector2<T>, MutableTuple2<T> {
@@ -62,7 +82,7 @@ interface MutableVector2<T : Number> : Vector2<T>, MutableTuple2<T> {
     override fun toFloat(): MutableVector2<Float>
     override fun toInt(): MutableVector2<Int>
 
-    override fun toPoint(): MutablePoint2<T>
+//    override fun toPoint(): MutablePoint2<T>
 }
 
 sealed class Vector2Base<T : Number> : MutableVector2<T> {
@@ -205,12 +225,12 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
-    override fun toPoint(): MutablePoint2<T> = when (this) {
-        is Vector2D -> Point2D(x, y)
-        is Vector2F -> Point2F(x, y)
-        is Vector2I -> Point2I(x, y)
-    } as MutablePoint2<T>
+//    @Suppress("UNCHECKED_CAST")
+//    override fun toPoint(): MutablePoint2<T> = when (this) {
+//        is Vector2D -> Point2D(x, y)
+//        is Vector2F -> Point2F(x, y)
+//        is Vector2I -> Point2I(x, y)
+//    } as MutablePoint2<T>
 }
 
 data class Vector2D(override var x: Double = 0.0, override var y: Double = 0.0) : Vector2Base<Double>() {
