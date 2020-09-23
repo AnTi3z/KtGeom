@@ -42,10 +42,10 @@ interface MutableRect2<T : Number> : Rect2<T> {
     override var height: T
 }
 
-sealed class Rect2Base<T : Number> : MutableRect2<T> {
+sealed class Rect2Base<T : Number>(bl: Tuple2<T>, tr: Tuple2<T>) : MutableRect2<T> {
 
-    protected abstract val blPoint: MutablePoint2<T>
-    protected abstract val trPoint: MutablePoint2<T>
+    private val blPoint: MutablePoint2<T> = bl.toMutablePoint2()
+    private val trPoint: MutablePoint2<T> = tr.toMutablePoint2()
 
     override var top: T
         get() = trPoint.y
@@ -196,23 +196,15 @@ sealed class Rect2Base<T : Number> : MutableRect2<T> {
 }
 
 class Rect2D(
-        point1: Point2<*>,
-        point2: Point2<*>,
-) : Rect2Base<Double>() {
-
-    override val blPoint: MutablePoint2<Double> = Point2D(
-            minOf(point1.x.toDouble(), point2.x.toDouble()),
-            minOf(point1.y.toDouble(), point2.y.toDouble())
-    )
-
-    override val trPoint: MutablePoint2<Double> = Point2D(
-            maxOf(point1.x.toDouble(), point2.x.toDouble()),
-            maxOf(point1.y.toDouble(), point2.y.toDouble())
-    )
+        point1: Tuple2<Double>,
+        point2: Tuple2<Double>,
+) : Rect2Base<Double>(
+        Point2D(minOf(point1.x, point2.x), minOf(point1.y, point2.y)),
+        Point2D(maxOf(point1.x, point2.x), maxOf(point1.y, point2.y))
+) {
 
     companion object {
-        fun create(lowLeft: Tuple2<*>, upRight: Tuple2<*>) =
-                Rect2D(Point2D(lowLeft), Point2D(upRight))
+        fun create(point1: Tuple2<*>, point2: Tuple2<*>) = Rect2D(point1.toDouble(), point2.toDouble())
 
         fun create(center: Tuple2<*>, width: Number, height: Number): Rect2D {
             val centerPoint2D = Point2D(center)
@@ -227,23 +219,15 @@ class Rect2D(
 }
 
 class Rect2F(
-        point1: Point2<*>,
-        point2: Point2<*>,
-) : Rect2Base<Float>() {
-
-    override val blPoint: MutablePoint2<Float> = Point2F(
-            minOf(point1.x.toFloat(), point2.x.toFloat()),
-            minOf(point1.y.toFloat(), point2.y.toFloat())
-    )
-
-    override val trPoint: MutablePoint2<Float> = Point2F(
-            maxOf(point1.x.toFloat(), point2.x.toFloat()),
-            maxOf(point1.y.toFloat(), point2.y.toFloat())
-    )
+        point1: Tuple2<Float>,
+        point2: Tuple2<Float>,
+) : Rect2Base<Float>(
+        Point2F(minOf(point1.x, point2.x), minOf(point1.y, point2.y)),
+        Point2F(maxOf(point1.x, point2.x), maxOf(point1.y, point2.y))
+) {
 
     companion object {
-        fun create(lowLeft: Tuple2<*>, upRight: Tuple2<*>) =
-                Rect2F(Point2F(lowLeft), Point2F(upRight))
+        fun create(point1: Tuple2<*>, point2: Tuple2<*>) = Rect2F(point1.toFloat(), point2.toFloat())
 
         fun create(center: Tuple2<*>, width: Number, height: Number): Rect2F {
             val centerPoint2F = Point2F(center)
@@ -258,23 +242,15 @@ class Rect2F(
 }
 
 class Rect2I(
-        point1: Point2<*>,
-        point2: Point2<*>,
-) : Rect2Base<Int>() {
-
-    override val blPoint: MutablePoint2<Int> = Point2I(
-            minOf(point1.x.toInt(), point2.x.toInt()),
-            minOf(point1.y.toInt(), point2.y.toInt())
-    )
-
-    override val trPoint: MutablePoint2<Int> = Point2I(
-            maxOf(point1.x.toInt(), point2.x.toInt()),
-            maxOf(point1.y.toInt(), point2.y.toInt())
-    )
+        point1: Tuple2<Int>,
+        point2: Tuple2<Int>,
+) : Rect2Base<Int>(
+        Point2I(minOf(point1.x, point2.x), minOf(point1.y, point2.y)),
+        Point2I(maxOf(point1.x, point2.x), maxOf(point1.y, point2.y))
+) {
 
     companion object {
-        fun create(lowLeft: Tuple2<*>, upRight: Tuple2<*>) =
-                Rect2I(Point2I(lowLeft), Point2I(upRight))
+        fun create(point1: Tuple2<*>, point2: Tuple2<*>) = Rect2I(point1.toInt(), point2.toInt())
 
         fun create(center: Tuple2<*>, width: Number, height: Number): Rect2I {
             val centerPoint2I = Point2I(center)

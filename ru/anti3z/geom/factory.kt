@@ -11,8 +11,8 @@ interface Geom2Factory<R : Number> {
     fun createVector(src: Tuple2<*>): Vector2<R>
     fun createMutableVector(src: Tuple2<*>): MutableVector2<R>
 
-    fun createRect(bottomLeft: Tuple2<*>, topRight: Tuple2<*>): Rect2<R>
-    fun createMutableRect(bottomLeft: Tuple2<*>, topRight: Tuple2<*>): MutableRect2<R>
+    fun createRect(point1: Tuple2<*>, point2: Tuple2<*>): Rect2<R>
+    fun createMutableRect(point1: Tuple2<*>, point2: Tuple2<*>): MutableRect2<R>
     fun createRect(center: Tuple2<*>, width: Number, height: Number): Rect2<R>
     fun createMutableRect(center: Tuple2<*>, width: Number, height: Number): MutableRect2<R>
     fun createRect(width: Number, height: Number): Rect2<R>
@@ -39,25 +39,24 @@ class Geom2DFactory : Geom2Factory<Double> {
     override fun createMutableVector(src: Tuple2<*>): MutableVector2<Double> = Vector2D(src)
 
     /** Rect2D creators  **/
-    override fun createRect(bottomLeft: Tuple2<*>, topRight: Tuple2<*>): Rect2<Double> =
-        Rect2D.create(bottomLeft, topRight)
+    override fun createRect(point1: Tuple2<*>, point2: Tuple2<*>): Rect2<Double> = Rect2D.create(point1, point2)
 
-    override fun createMutableRect(bottomLeft: Tuple2<*>, topRight: Tuple2<*>): MutableRect2<Double> =
-        Rect2D.create(bottomLeft, topRight)
+    override fun createMutableRect(point1: Tuple2<*>, point2: Tuple2<*>): MutableRect2<Double> =
+            Rect2D.create(point1, point2)
 
     override fun createRect(center: Tuple2<*>, width: Number, height: Number): Rect2<Double> =
-        Rect2D.create(center, width, height)
+            Rect2D.create(center, width, height)
 
     override fun createMutableRect(center: Tuple2<*>, width: Number, height: Number): MutableRect2<Double> =
-        Rect2D.create(center, width, height)
+            Rect2D.create(center, width, height)
 
     override fun createRect(width: Number, height: Number): Rect2<Double> = Rect2D.create(width, height)
     override fun createMutableRect(width: Number, height: Number): MutableRect2<Double> = Rect2D.create(width, height)
     override fun createRect(top: Number, left: Number, right: Number, bottom: Number): Rect2<Double> =
-        Rect2D.create(top, left, right, bottom)
+            Rect2D.create(top, left, right, bottom)
 
     override fun createMutableRect(top: Number, left: Number, right: Number, bottom: Number): MutableRect2<Double> =
-        Rect2D.create(top, left, right, bottom)
+            Rect2D.create(top, left, right, bottom)
 }
 
 class Geom2FFactory : Geom2Factory<Float> {
@@ -78,25 +77,24 @@ class Geom2FFactory : Geom2Factory<Float> {
     override fun createMutableVector(src: Tuple2<*>): MutableVector2<Float> = Vector2F(src)
 
     /** Rect2F creators  **/
-    override fun createRect(bottomLeft: Tuple2<*>, topRight: Tuple2<*>): Rect2<Float> =
-        Rect2F.create(bottomLeft, topRight)
+    override fun createRect(point1: Tuple2<*>, point2: Tuple2<*>): Rect2<Float> = Rect2F.create(point1, point2)
 
-    override fun createMutableRect(bottomLeft: Tuple2<*>, topRight: Tuple2<*>): MutableRect2<Float> =
-        Rect2F.create(bottomLeft, topRight)
+    override fun createMutableRect(point1: Tuple2<*>, point2: Tuple2<*>): MutableRect2<Float> =
+            Rect2F.create(point1, point2)
 
     override fun createRect(center: Tuple2<*>, width: Number, height: Number): Rect2<Float> =
-        Rect2F.create(center, width, height)
+            Rect2F.create(center, width, height)
 
     override fun createMutableRect(center: Tuple2<*>, width: Number, height: Number): MutableRect2<Float> =
-        Rect2F.create(center, width, height)
+            Rect2F.create(center, width, height)
 
     override fun createRect(width: Number, height: Number): Rect2<Float> = Rect2F.create(width, height)
     override fun createMutableRect(width: Number, height: Number): MutableRect2<Float> = Rect2F.create(width, height)
     override fun createRect(top: Number, left: Number, right: Number, bottom: Number): Rect2<Float> =
-        Rect2F.create(top, left, right, bottom)
+            Rect2F.create(top, left, right, bottom)
 
     override fun createMutableRect(top: Number, left: Number, right: Number, bottom: Number): MutableRect2<Float> =
-        Rect2F.create(top, left, right, bottom)
+            Rect2F.create(top, left, right, bottom)
 }
 
 class Geom2IFactory : Geom2Factory<Int> {
@@ -117,23 +115,22 @@ class Geom2IFactory : Geom2Factory<Int> {
     override fun createMutableVector(src: Tuple2<*>): MutableVector2<Int> = Vector2I(src)
 
     /** Rect2I creators  **/
-    override fun createRect(bottomLeft: Tuple2<*>, topRight: Tuple2<*>): Rect2<Int> =
-        Rect2I.create(bottomLeft, topRight)
+    override fun createRect(point1: Tuple2<*>, point2: Tuple2<*>): Rect2<Int> = Rect2I.create(point1, point2)
 
-    override fun createMutableRect(bottomLeft: Tuple2<*>, topRight: Tuple2<*>): MutableRect2<Int> =
-        Rect2I.create(bottomLeft, topRight)
+    override fun createMutableRect(point1: Tuple2<*>, point2: Tuple2<*>): MutableRect2<Int> =
+            Rect2I.create(point1, point2)
 
     override fun createRect(center: Tuple2<*>, width: Number, height: Number): Rect2<Int> =
-        Rect2I.create(center, width, height)
+            Rect2I.create(center, width, height)
 
     override fun createMutableRect(center: Tuple2<*>, width: Number, height: Number): MutableRect2<Int> =
-        Rect2I.create(center, width, height)
+            Rect2I.create(center, width, height)
 
     override fun createRect(width: Number, height: Number): Rect2<Int> = Rect2I.create(width, height)
     override fun createMutableRect(width: Number, height: Number): MutableRect2<Int> = Rect2I.create(width, height)
     override fun createRect(top: Number, left: Number, right: Number, bottom: Number): Rect2<Int> =
-        Rect2I.create(top, left, right, bottom)
+            Rect2I.create(top, left, right, bottom)
 
     override fun createMutableRect(top: Number, left: Number, right: Number, bottom: Number): MutableRect2<Int> =
-        Rect2I.create(top, left, right, bottom)
+            Rect2I.create(top, left, right, bottom)
 }
