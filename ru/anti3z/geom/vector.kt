@@ -167,10 +167,10 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
 
     @Suppress("UNCHECKED_CAST")
     override fun dot(vec: Vector2<*>): T = when (this) {
-        is Vector2D -> (x * vec.x.toDouble() + y * vec.y.toDouble()) as T
-        is Vector2F -> (x * vec.x.toFloat() + y * vec.y.toFloat()) as T
-        is Vector2I -> (x * vec.x.toInt() + y * vec.y.toInt()) as T
-    }
+        is Vector2D -> x * vec.x.toDouble() + y * vec.y.toDouble()
+        is Vector2F -> x * vec.x.toFloat() + y * vec.y.toFloat()
+        is Vector2I -> x * vec.x.toInt() + y * vec.y.toInt()
+    } as T
 
     override fun timesAssign(rhs: Number) = scale(rhs.toDouble())
 

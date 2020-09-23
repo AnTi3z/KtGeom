@@ -123,31 +123,32 @@ sealed class Rect2Base<T : Number> : MutableRect2<T> {
     @Suppress("UNCHECKED_CAST")
     override var width: T
         get() = when (this) {
-            is Rect2D -> (topRight.x - bottomLeft.x) as T
-            is Rect2F -> (topRight.x - bottomLeft.x) as T
-            is Rect2I -> (topRight.x - bottomLeft.x) as T
-        }
+            is Rect2D -> (topRight.x - bottomLeft.x)
+            is Rect2F -> (topRight.x - bottomLeft.x)
+            is Rect2I -> (topRight.x - bottomLeft.x)
+        } as T
         set(value) {
-            when (this) {
-                is Rect2D -> trPoint.x = (bottomLeft.x + value as Double) as T
-                is Rect2F -> trPoint.x = (bottomLeft.x + value as Float) as T
-                is Rect2I -> trPoint.x = (bottomLeft.x + value as Int) as T
-            }
+            trPoint.x = when (this) {
+                is Rect2D -> bottomLeft.x + value as Double
+                is Rect2F -> bottomLeft.x + value as Float
+                is Rect2I -> bottomLeft.x + value as Int
+            } as T
         }
 
     @Suppress("UNCHECKED_CAST")
     override var height: T
         get() = when (this) {
-            is Rect2D -> (topRight.y - bottomLeft.y) as T
-            is Rect2F -> (topRight.y - bottomLeft.y) as T
-            is Rect2I -> (topRight.y - bottomLeft.y) as T
+            is Rect2D -> (topRight.y - bottomLeft.y)
+            is Rect2F -> (topRight.y - bottomLeft.y)
+            is Rect2I -> (topRight.y - bottomLeft.y)
+        } as T
+        set(value) {
+            trPoint.y = when (this) {
+                is Rect2D -> bottomLeft.y + value as Double
+                is Rect2F -> bottomLeft.y + value as Float
+                is Rect2I -> bottomLeft.y + value as Int
+            } as T
         }
-        set(value) =
-            when (this) {
-                is Rect2D -> trPoint.y = (bottomLeft.y + value as Double) as T
-                is Rect2F -> trPoint.y = (bottomLeft.y + value as Float) as T
-                is Rect2I -> trPoint.y = (bottomLeft.y + value as Int) as T
-            }
 
     override operator fun contains(pnt: Tuple2<*>) = when (this) {
         is Rect2D -> (pnt.x.toDouble() in bottomLeft.x..topRight.x) && (pnt.y.toDouble() in bottomLeft.y..topRight.y)
