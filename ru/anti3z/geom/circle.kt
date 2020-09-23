@@ -58,6 +58,26 @@ sealed class Circle2Base<T : Number>(center: Tuple2<T>, override var radius: T) 
     override fun collision(other: Rect2<*>): Boolean = collision(other, this)
 
     override fun collision(other: Circle2<*>): Boolean = collision(this, other)
+
+    override fun toString(): String {
+        return "${this::class.simpleName}(center.x=${center.x}, center.y=${center.y}, radius=$radius)"
+    }
+
+    override fun hashCode(): Int {
+        var result = radius.hashCode()
+        result = 31 * result + centerPoint.hashCode()
+        return result
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Circle2Base<*>) return false
+
+        if (radius != other.radius) return false
+        if (centerPoint != other.centerPoint) return false
+
+        return true
+    }
 }
 
 class Circle2D(center: Point2<*>, radius: Number) : Circle2Base<Double>(center.toDouble(), radius.toDouble())
