@@ -33,6 +33,7 @@ sealed class Circle2Base<T : Number>(center: Tuple2<T>, override var radius: T) 
             is Circle2I -> radius * 2
         } as T
         set(value) {
+            require(value.toDouble() > 0.0) { "Diameter must be positive non-zero value, was $value" }
             radius = when(this) {
                 is Circle2D -> value as Double / 2
                 is Circle2F -> value as Float / 2

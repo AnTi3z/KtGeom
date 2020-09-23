@@ -47,40 +47,47 @@ sealed class Rect2Base<T : Number> : MutableRect2<T> {
     protected abstract val blPoint: MutablePoint2<T>
     protected abstract val trPoint: MutablePoint2<T>
 
-    // TODO: Require top > bottom and right > left
     override var top: T
         get() = trPoint.y
         set(value) {
+            require(value.toDouble() > bottom.toDouble()) {"Top must be greater than bottom"}
             trPoint.y = value
         }
 
     override var bottom: T
         get() = blPoint.y
         set(value) {
+            require(value.toDouble() < top.toDouble()) {"Bottom must be less than top"}
             blPoint.y = value
         }
 
     override var right: T
         get() = trPoint.x
         set(value) {
+            require(value.toDouble() > left.toDouble()) {"Right must be greater than left"}
             trPoint.x = value
         }
 
     override var left: T
         get() = blPoint.x
         set(value) {
+            require(value.toDouble() < right.toDouble()) {"Left must be less than right"}
             blPoint.x = value
         }
 
     override var bottomLeft: Point2<T>
         get() = blPoint
         set(value) {
+            require(value.y.toDouble() < top.toDouble()) {"Bottom must be less than top"}
+            require(value.x.toDouble() < right.toDouble()) {"Left must be less than right"}
             blPoint.set(value)
         }
 
     override var topRight: Point2<T>
         get() = trPoint
         set(value) {
+            require(value.y.toDouble() > bottom.toDouble()) {"Top must be greater than bottom"}
+            require(value.x.toDouble() > left.toDouble()) {"Right must be greater than left"}
             trPoint.set(value)
         }
 
@@ -92,6 +99,8 @@ sealed class Rect2Base<T : Number> : MutableRect2<T> {
             is Rect2I -> Point2I(trPoint.x, blPoint.y)
         } as Point2<T>
         set(value) {
+            require(value.y.toDouble() < top.toDouble()) {"Bottom must be less than top"}
+            require(value.x.toDouble() > left.toDouble()) {"Right must be greater than left"}
             trPoint.x = value.x
             blPoint.y = value.y
         }
@@ -104,6 +113,8 @@ sealed class Rect2Base<T : Number> : MutableRect2<T> {
             is Rect2I -> Point2I(blPoint.x, trPoint.y)
         } as Point2<T>
         set(value) {
+            require(value.y.toDouble() < top.toDouble()) {"Bottom must be less than top"}
+            require(value.x.toDouble() < right.toDouble()) {"Left must be less than right"}
             blPoint.x = value.x
             trPoint.y = value.y
         }
@@ -129,6 +140,7 @@ sealed class Rect2Base<T : Number> : MutableRect2<T> {
             is Rect2I -> (topRight.x - bottomLeft.x)
         } as T
         set(value) {
+            require(value.toDouble() > 0.0) { "Width must be positive non-zero value, was $value" }
             trPoint.x = when (this) {
                 is Rect2D -> bottomLeft.x + value as Double
                 is Rect2F -> bottomLeft.x + value as Float
@@ -144,6 +156,7 @@ sealed class Rect2Base<T : Number> : MutableRect2<T> {
             is Rect2I -> (topRight.y - bottomLeft.y)
         } as T
         set(value) {
+            require(value.toDouble() > 0.0) { "Height must be positive non-zero value, was $value" }
             trPoint.y = when (this) {
                 is Rect2D -> bottomLeft.y + value as Double
                 is Rect2F -> bottomLeft.y + value as Float
