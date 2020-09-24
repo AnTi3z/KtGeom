@@ -60,8 +60,8 @@ interface MutableVector2<T : Number> : Vector2<T>, MutableTuple2<T> {
     override operator fun times(rhs: Number): MutableVector2<T> = super.times(rhs) as MutableVector2<T>
     override operator fun div(rhs: Number): MutableVector2<T> = super.div(rhs) as MutableVector2<T>
 
-    operator fun timesAssign(rhs: Number)
-    operator fun divAssign(rhs: Number)
+    operator fun timesAssign(rhs: Number) = scale(rhs.toDouble())
+    operator fun divAssign(rhs: Number) = scale(1.0 / rhs.toDouble())
 
     override operator fun unaryMinus(): MutableVector2<T>
     override fun scaled(factor: Double): MutableVector2<T>
@@ -133,10 +133,6 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
         is Vector2F -> x * vec.x.toFloat() + y * vec.y.toFloat()
         is Vector2I -> x * vec.x.toInt() + y * vec.y.toInt()
     } as T
-
-    override fun timesAssign(rhs: Number) = scale(rhs.toDouble())
-
-    override fun divAssign(rhs: Number) = scale(1.0 / rhs.toDouble())
 
     override fun toDouble(): MutableVector2<Double> = when (this) {
         is Vector2D -> this
