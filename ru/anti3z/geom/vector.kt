@@ -54,8 +54,8 @@ interface MutableVector2<T : Number> : Vector2<T>, MutableTuple2<T> {
     override operator fun plus(rhs: Vector2<*>): MutableVector2<T>
     override operator fun minus(rhs: Vector2<*>): MutableVector2<T>
 
-    operator fun plusAssign(rhs: Vector2<*>)
-    operator fun minusAssign(rhs: Vector2<*>)
+    operator fun plusAssign(rhs: Vector2<*>) = set(this + rhs)
+    operator fun minusAssign(rhs: Vector2<*>) = set(this - rhs)
 
     override operator fun times(rhs: Number): MutableVector2<T> = super.times(rhs) as MutableVector2<T>
     override operator fun div(rhs: Number): MutableVector2<T> = super.div(rhs) as MutableVector2<T>
@@ -95,40 +95,6 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
         is Vector2F -> Vector2F(x - rhs.x.toFloat(), y - rhs.y.toFloat())
         is Vector2I -> Vector2I(x - rhs.x.toInt(), y - rhs.y.toInt())
     } as MutableVector2<T>
-
-    override operator fun plusAssign(rhs: Vector2<*>) {
-        when (this) {
-            is Vector2D -> {
-                x += rhs.x.toDouble()
-                y += rhs.y.toDouble()
-            }
-            is Vector2F -> {
-                x += rhs.x.toFloat()
-                y += rhs.y.toFloat()
-            }
-            is Vector2I -> {
-                x += rhs.x.toInt()
-                y += rhs.y.toInt()
-            }
-        }
-    }
-
-    override operator fun minusAssign(rhs: Vector2<*>) {
-        when (this) {
-            is Vector2D -> {
-                x -= rhs.x.toDouble()
-                y -= rhs.y.toDouble()
-            }
-            is Vector2F -> {
-                x -= rhs.x.toFloat()
-                y -= rhs.y.toFloat()
-            }
-            is Vector2I -> {
-                x -= rhs.x.toInt()
-                y -= rhs.y.toInt()
-            }
-        }
-    }
 
     @Suppress("UNCHECKED_CAST")
     override operator fun unaryMinus(): MutableVector2<T> = when (this) {

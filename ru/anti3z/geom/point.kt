@@ -36,8 +36,8 @@ interface MutablePoint2<T : Number> : Point2<T>, MutableTuple2<T> {
     override operator fun plus(rhs: Vector2<*>): MutablePoint2<T>
     override operator fun minus(rhs: Vector2<*>): MutablePoint2<T>
 
-    operator fun plusAssign(rhs: Vector2<*>)
-    operator fun minusAssign(rhs: Vector2<*>)
+    operator fun plusAssign(rhs: Vector2<*>) = set(this + rhs)
+    operator fun minusAssign(rhs: Vector2<*>) = set(this - rhs)
 
     override fun toDouble(): MutablePoint2<Double>
     override fun toFloat(): MutablePoint2<Float>
@@ -60,40 +60,6 @@ sealed class Point2Base<T : Number> : MutablePoint2<T> {
         is Point2F -> Point2F(x - rhs.x.toFloat(), y - rhs.y.toFloat())
         is Point2I -> Point2I(x - rhs.x.toInt(), y - rhs.y.toInt())
     } as MutablePoint2<T>
-
-    override operator fun plusAssign(rhs: Vector2<*>) {
-        when (this) {
-            is Point2D -> {
-                x += rhs.x.toDouble()
-                y += rhs.y.toDouble()
-            }
-            is Point2F -> {
-                x += rhs.x.toFloat()
-                y += rhs.y.toFloat()
-            }
-            is Point2I -> {
-                x += rhs.x.toInt()
-                y += rhs.y.toInt()
-            }
-        }
-    }
-
-    override operator fun minusAssign(rhs: Vector2<*>) {
-        when (this) {
-            is Point2D -> {
-                x -= rhs.x.toDouble()
-                y -= rhs.y.toDouble()
-            }
-            is Point2F -> {
-                x -= rhs.x.toFloat()
-                y -= rhs.y.toFloat()
-            }
-            is Point2I -> {
-                x -= rhs.x.toInt()
-                y -= rhs.y.toInt()
-            }
-        }
-    }
 
     override fun toDouble(): MutablePoint2<Double> = when (this) {
         is Point2D -> this
