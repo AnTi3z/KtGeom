@@ -15,25 +15,27 @@ interface MutableCircle2<T : Number> : Circle2<T> {
     override var radius: T
     override var diam: T
 
-    fun setCenter(x: T = center.x, y: T = center.y )
+    fun setCenter(x: T = center.x, y: T = center.y)
 }
 
 sealed class Circle2Base<T : Number>(private val centerPoint: MutablePoint2<T>, override var radius: T) : MutableCircle2<T> {
 
     override var center: Point2<T>
         get() = centerPoint
-        set(value) { centerPoint.set(value) }
+        set(value) {
+            centerPoint.set(value)
+        }
 
     @Suppress("UNCHECKED_CAST")
     override var diam: T
-        get() = when(this) {
+        get() = when (this) {
             is Circle2D -> radius * 2
             is Circle2F -> radius * 2
             is Circle2I -> radius * 2
         } as T
         set(value) {
             require(value.toDouble() > 0.0) { "Diameter must be positive non-zero value, was $value" }
-            radius = when(this) {
+            radius = when (this) {
                 is Circle2D -> value as Double / 2
                 is Circle2F -> value as Float / 2
                 is Circle2I -> value as Int / 2
@@ -46,7 +48,7 @@ sealed class Circle2Base<T : Number>(private val centerPoint: MutablePoint2<T>, 
     }
 
     override fun contains(pnt: Tuple2<*>): Boolean {
-        val point = when(this) {
+        val point = when (this) {
             is Circle2D -> Point2D(pnt)
             is Circle2F -> Point2F(pnt)
             is Circle2I -> Point2I(pnt)

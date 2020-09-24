@@ -110,12 +110,12 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
                 y *= factor
             }
             is Vector2F -> {
-                x = (x*factor).toFloat()
-                y = (y*factor).toFloat()
+                x = (x * factor).toFloat()
+                y = (y * factor).toFloat()
             }
             is Vector2I -> {
-                x = (x*factor).toInt()
-                y = (y*factor).toInt()
+                x = (x * factor).toInt()
+                y = (y * factor).toInt()
             }
         }
     }
@@ -136,7 +136,7 @@ sealed class Vector2Base<T : Number> : MutableVector2<T> {
 
     override fun timesAssign(rhs: Number) = scale(rhs.toDouble())
 
-    override fun divAssign(rhs: Number) = scale(1.0/rhs.toDouble())
+    override fun divAssign(rhs: Number) = scale(1.0 / rhs.toDouble())
 
     override fun toDouble(): MutableVector2<Double> = when (this) {
         is Vector2D -> this
