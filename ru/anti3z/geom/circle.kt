@@ -18,7 +18,10 @@ interface MutableCircle2<T : Number> : Circle2<T> {
     fun setCenter(x: T = center.x, y: T = center.y)
 }
 
-sealed class Circle2Base<T : Number>(private val centerPoint: MutablePoint2<T>, override var radius: T) : MutableCircle2<T> {
+sealed class Circle2Base<T : Number>(
+        private val centerPoint: MutablePoint2<T>,
+        override var radius: T
+) : MutableCircle2<T> {
 
     override var center: Point2<T>
         get() = centerPoint

@@ -42,8 +42,10 @@ interface MutableRect2<T : Number> : Rect2<T> {
     override var height: T
 }
 
-sealed class Rect2Base<T : Number>(private val blPoint: MutablePoint2<T>,
-                                   private val trPoint: MutablePoint2<T>) : MutableRect2<T> {
+sealed class Rect2Base<T : Number>(
+        private val blPoint: MutablePoint2<T>,
+        private val trPoint: MutablePoint2<T>
+) : MutableRect2<T> {
 
     override var top: T
         get() = trPoint.y
